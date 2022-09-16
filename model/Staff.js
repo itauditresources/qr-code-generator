@@ -7,16 +7,16 @@ import fs from 'fs'
 class Staff {
   /**
   * Staff class constructor including all staff properties
-  * @param firstName String 
-  * @param lastName String
-  * @param position String
-  * @param email String
-  * @param telephone Integer
-  * @param mobile Integer
-  * @param website URL
+  * @param {String} firstName
+  * @param {String} lastName
+  * @param {String} postition
+  * @param {String} email
+  * @param {Number} telephone
+  * @param {Number} mobile
+  * @param {URL} website
   *
   *
-  * @returns function
+  * @returns Class object
   */
   
   constructor(firstName, lastName, position, email, telephone, mobile, website) {
