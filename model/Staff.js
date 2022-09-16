@@ -38,7 +38,7 @@ class Staff {
     Validation method to sanitize the properties data types
     */
 
-    if (!validate.isString(this._fristName) throw new Error('Provide a string')
+    if (!validate.isString(this._fristName)) throw new Error('Provide a string')
 
     
   }

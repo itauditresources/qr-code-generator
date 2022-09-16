@@ -15,3 +15,4 @@ run production build with `node start`
 1. [Express](https://www.npmjs.com/package/express)
 2. [Validator](https://www.npmjs.com/package/validator)
 3. [FileSaverJS](https://www.npmjs.com/package/file-saver)
+4. [Dotenv](https://www.nmpjs.com/package/dotenv)
