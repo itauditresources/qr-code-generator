@@ -1,14 +1,19 @@
 import express from "express";
 
-const app = express();
+const dotenv = require('dotenv').config()]
 
-app.all("/", (req, res, next) => {
+const sever = express();
+
+sever.all("/", (req, res, next) => {
   const body = req.body;
   console.log(body);
 });
 
-const port = 3000;
+const port = process.env['ENV'] === 'PRODUCTION' ? process.env['PORT'] : 3000
 
-app.listen(port, () => {
+sever.listen(port, () => {
   console.log(`Server listen on port: ${port}`);
 });
+
+
+module.exports = sever

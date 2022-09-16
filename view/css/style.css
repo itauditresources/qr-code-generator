@@ -41,4 +41,27 @@ img {
     width: 100%;
 }
 
+.container {
+
+    padding: 0 5rem;
+    max-width: 1250px;
+}
+
+.header {
+
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-navbar {
+
+    display: flex;
+    flex-direction: column;
+    height: 25vh;
+    align-items: space-between;
+}
 
