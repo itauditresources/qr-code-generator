@@ -1,19 +1,26 @@
 import express from "express";
+const dotenv = require('dotenv').config()
 
-const dotenv = require('dotenv').config()]
-
-const sever = express();
-
-sever.all("/", (req, res, next) => {
-  const body = req.body;
-  console.log(body);
-});
+import app from './index'
 
 const port = process.env['ENV'] === 'PRODUCTION' ? process.env['PORT'] : 3000
 
-sever.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server listen on port: ${port}`);
 });
 
+// Shutting down the server and exit the nodejs process after an unhandled exeption occurs
+process.on('uncaughtException', err => {
+	console.error(err);
+	server.close(() => {
+		process.exit(1);
+	});
+});
 
-module.exports = sever
+// Shutting down the server and exit the nodejs process after an unhandled rejection occurs
+process.on('unhandledRejection', err => {
+	console.error(err.name, err.message);
+	server.close(() => {
+		process.exit(1);
+	});
+});
