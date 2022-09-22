@@ -1,4 +1,3 @@
-import express from "express";
 const dotenv = require('dotenv').config()
 
 import app from './index'

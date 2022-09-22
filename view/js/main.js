@@ -1,6 +1,5 @@
 import saveAs from 'file-saver'
 
-
 // create a file container for the vCard syntax
 // the vCard is created in accordance to RFC2426 
 const file = new Blob(
