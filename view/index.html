@@ -1,100 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>QR Code Generator</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet"> 
-  </head>
-  <body>
-    <noscript>
-		You need to enable JavaScript to run this app.
-	</noscript>
-    
-    <section id="header">
-        
-        <div class="container">
-            
-            <div class="header">
-                <nav class="header-navbar">
-                    <ul>
-                        <li class="animate-btn"><a href="#">Home</a></li>
-                        <li class="animate-btn"></li>
-                    </ul>
-                </nav>
-                <div class="header-content">
-                    <h1 class="heading">QR Code Generator</h1>
-                        <div class="form-container">
-                            <form class="form" autocomplete="off">
-                                
-                                <div class="input-field">
-                                    <input id="firstName" type="text">
-                                    <label for="firstName">First Name: </label>
-                                    <div class="input-icon"></div>
-                                    <div class="input-clear"></div>
-                                </div>
-                                <div class="input-field">
-                                    <input id="lastName" type="text">
-                                    <label for="lastName">Last Name: </label>
-                                    <div class="input-icon"></div>
-                                    <div class="input-clear"></div>
-                                </div>
-                                <div class="input-field">
-                                    <input id="position" type="text">
-                                    <label for="position">Position: </label>
-                                    <div class="input-icon"></div>
-                                    <div class="input-clear"></div>
-                                </div>
-                                <div class="input-field">
-                                    <input id="E-Mail" type="email">
-                                    <label for="E-Mail">E-Mail: </label>
-                                    <div class="input-icon"></div>
-                                    <div class="input-clear"></div>
-                                </div>
-                                <div class="input-field">
-                                    <input id="telephone" type="tel">
-                                    <label for="telephone">Telephone: </label>
-                                    <div class="input-icon"></div>
-                                    <div class="input-clear"></div>
-                                </div>
-                                <div class="input-field">
-                                    <input id="mobile" type="tel">
-                                    <label for="mobile">Mobile: </label>
-                                    <div class="input-icon"></div>
-                                    <div class="input-clear"></div>
-                                </div>
-                                <div class="input-field">
-                                    <input id="company" type="text">
-                                    <label for="company">Company: </label>
-                                    <div class="input-icon"></div>
-                                    <div class="input-clear"></div>
-                                </div>
-                                <div class="input-field">
-                                    <input id="website" type="url">
-                                    <label for="website">Website: </label>
-                                    <div class="input-icon"></div>
-                                    <div class="input-clear"></div>
-                                </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>VCard Generator</title>
+		<link rel="stylesheet" href="style.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet" />
+	</head>
+	<body>
+		<noscript> You need to enable JavaScript to run this app. </noscript>
 
+		<section id="header">
+			<div class="container">
+				<div class="header">
+					<nav class="header-navbar">
+						<ul>
+							<li class="animate-btn"><a href="#">Home</a></li>
+							<li class="animate-btn"></li>
+						</ul>
+					</nav>
+					<div class="header-content">
+						<h1 class="heading">QR Code Generator</h1>
+						<div class="form-container">
+							<form class="form" autocomplete="off">
+								<div class="input-field">
+									<input id="firstName" type="text" />
+									<label for="firstName">First Name: </label>
+									<div class="input-icon"></div>
+									<div class="input-clear"></div>
+								</div>
+								<div class="input-field">
+									<input id="lastName" type="text" />
+									<label for="lastName">Last Name: </label>
+									<div class="input-icon"></div>
+									<div class="input-clear"></div>
+								</div>
+								<div class="input-field">
+									<input id="position" type="text" />
+									<label for="position">Position: </label>
+									<div class="input-icon"></div>
+									<div class="input-clear"></div>
+								</div>
+								<div class="input-field">
+									<input id="E-Mail" type="email" />
+									<label for="E-Mail">E-Mail: </label>
+									<div class="input-icon"></div>
+									<div class="input-clear"></div>
+								</div>
+								<div class="input-field">
+									<input id="telephone" type="tel" />
+									<label for="telephone">Telephone: </label>
+									<div class="input-icon"></div>
+									<div class="input-clear"></div>
+								</div>
+								<div class="input-field">
+									<input id="mobile" type="tel" />
+									<label for="mobile">Mobile: </label>
+									<div class="input-icon"></div>
+									<div class="input-clear"></div>
+								</div>
+								<div class="input-field">
+									<input id="company" type="text" />
+									<label for="company">Company: </label>
+									<div class="input-icon"></div>
+									<div class="input-clear"></div>
+								</div>
+								<div class="input-field">
+									<input id="website" type="url" />
+									<label for="website">Website: </label>
+									<div class="input-icon"></div>
+									<div class="input-clear"></div>
+								</div>
 
-                              <div class="btn" type="submit">Create</div>
-                              <div class="btn"><a>Clear</a></div>
-                              <div class="btn"><a>Export</a></div>
-                            </form>
-                        </div>
-                </div>
-            </div>
-        
-        
-        </div>
-    
-    </section>
+								<div class="btn" type="submit">Create</div>
+								<div class="btn"><a>Clear</a></div>
+								<div class="btn"><a>Export</a></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
-      
-	<script src="index.js"></script>
-  </body>
+		<script src="index.js"></script>
+	</body>
 </html>

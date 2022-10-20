@@ -1,14 +1,14 @@
-const dotenv = require('dotenv').config()
+const dotenv = require('dotenv').config();
 
-import app from './index'
+import app from './index';
 
-const port = process.env['ENV'] === 'PRODUCTION' ? process.env['PORT'] : 3000
+const port: Number = process.env['ENV'] === 'PRODUCTION' ? +process.env['PORT'] : 3000;
 
 const server = app.listen(port, () => {
-  console.log(`Server listen on port: ${port}`);
+	console.log(`Server listen on port: ${port}`);
 });
 
-// Shutting down the server and exit the nodejs process after an unhandled exeption occurs
+// Shutting down the server and exit the nodejs process after an unhandled exception occurs
 process.on('uncaughtException', err => {
 	console.error(err);
 	server.close(() => {
