@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"sourceMap": false,
-		"allowJs": true,
+		"allowJs": false,
 		"target": "ES3",
 		"module": "commonjs"
 	}
