@@ -1,4 +1,4 @@
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 import validator from 'validator';
 
 const vcardSchema = new mongoose.Schema({
@@ -10,7 +10,7 @@ const vcardSchema = new mongoose.Schema({
 		type: String,
 		required: [true, 'Provide an email address'],
 		validate: {
-			validator: function (value) {
+			validator: function (value: string) {
 				return validator.isEmail(value);
 			},
 			message: 'email not valid',

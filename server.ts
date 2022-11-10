@@ -18,11 +18,11 @@ mongoose
 const port: Number = process.env.PORT === 'PRODUCTION' ? +process.env['PORT'] : 3001;
 
 const server = app.listen(port, () => {
-	console.log(`Server listen on port: ${port}`);
+	console.log(`[server]: Server is listening on https://127.0.0.1:/${port}/`);
 });
 
 // Shutting down the server and exit the nodejs process after an unhandled exception occurs
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err: Error) => {
 	console.error(err);
 	server.close(() => {
 		process.exit(1);
@@ -30,7 +30,7 @@ process.on('uncaughtException', err => {
 });
 
 // Shutting down the server and exit the nodejs process after an unhandled rejection occurs
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err: Error) => {
 	console.error(err);
 	server.close(() => {
 		process.exit(1);

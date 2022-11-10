@@ -1,31 +1,25 @@
-import mongoose from 'mongoose';
+import { Response, Request, NextFunction } from 'express';
 
 import Staff from '../model/User';
-import func from '../utils/asyncDecorator';
+import asyncWrapper from '../utils/asyncWrapper';
+import { HttpCode } from '../utils/APIError';
+import { createResponse } from '../utils/responseBody';
 
-const getAllUsers = func(async (_req, res, _next) => {
+export const getAllUsers = asyncWrapper(async (_req: Response, res: Response, _next: NextFunction) => {
 	const users = await Staff.find();
 
-	res.status(200).json({
-		status: 'success',
-		results: users.length,
-		data: {
-			users,
-		},
-	});
+	res.status(HttpCode.OK).json(createResponse(true, users, users.length));
 });
 
-const getUser = func(async (req, res, _next) => {
-	const { id } = req.params.id;
+export const getUser = asyncWrapper(async (req: Request, res: Response, _next: NextFunction) => {
+	const { id } = req.params;
 
-	const user = await Staff.findById({ id });
+	const user = await Staff.findById({ _id: id });
 
-	res.status(200).json({
+	res.status(HttpCode.OK).json({
 		status: 'success',
 		data: {
 			user,
 		},
 	});
 });
-
-export { getAllUsers, getUser };

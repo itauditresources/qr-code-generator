@@ -3,6 +3,9 @@
 		"sourceMap": false,
 		"allowJs": false,
 		"target": "ES3",
-		"module": "commonjs"
+		"strict": true,
+		"module": "commonjs",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true
 	}
 }

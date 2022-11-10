@@ -1,12 +1,12 @@
 // import dependencies
-const express = require('express');
-const path = require('path');
+import express, { Request, Response, NextFunction } from 'express';
+import path from 'path';
 
 // import controllers
 import error from './controller/errorController';
 
 // import utilities
-import APIError from './utils/APIError';
+import { APIError, HttpCode } from './utils/APIError';
 
 // import routers
 import staffRouter from './router/userRouter';
@@ -23,8 +23,13 @@ app.use('/api/v1/users', staffRouter);
 app.use(express.static(path.join(__dirname, '/view')));
 
 // UNHANDLED ROUTES
-app.all('*', (req, res, next) => {
-	next(new APIError(`Cannot find ${req.originalUrl} on this server`, 404));
+app.all('*', (req: Request, _res: Response, next: NextFunction) => {
+	next(
+		new APIError({
+			httpCode: HttpCode.NOT_FOUND,
+			description: `Cannot find ${req.originalUrl} on this server`,
+		})
+	);
 });
 
 // ERROR HANDLING

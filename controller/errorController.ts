@@ -1,41 +1,68 @@
-import APIError from '../utils/APIError';
+import { Request, Response, NextFunction } from 'express';
+import { APIError, HttpCode } from '../utils/APIError';
 
-const handleCastError = err => {
+const handleCastError = (err: any) => {
 	const message = `Invalid ${err.path}: ${err.path}`;
-	return new APIError(message, 400);
+	return new APIError({
+		name: 'Error',
+		httpCode: HttpCode.NO_CONTENT,
+		description: message,
+		isOperational: false,
+	});
 };
 
-const handleDuplicateKeyError = err => {
+const handleDuplicateKeyError = (err: any) => {
 	// search in keyValue to get the field
 	const value = err.keyValue[Object.keys(err.keyValue)[0]];
 	const message = `Duplicate field value: "${value}". Please use an other value.`;
-	return new APIError(message, 400);
+	return new APIError({
+		name: 'Error',
+		httpCode: HttpCode.BAD_REQUEST,
+		description: message,
+		isOperational: false,
+	});
 };
 
-const handleValidationError = err => {
+const handleValidationError = (err: any) => {
 	const errors = Object.values(err.errors).map(el => el);
 	const message = `Invalid input data. ${errors.join('. ')}`;
-	return new APIError(message, 400);
+	return new APIError({
+		name: 'Error',
+		httpCode: HttpCode.BAD_REQUEST,
+		description: message,
+		isOperational: false,
+	});
 };
 
-const handleJWTError = () => new APIError('Invalid Token - Please log in', 401);
+const handleJWTError = () =>
+	new APIError({
+		name: 'Error',
+		httpCode: HttpCode.BAD_REQUEST,
+		description: 'Invalid Token - Please log in',
+		isOperational: false,
+	});
 
-const handleJWTExpiredError = () => new APIError('Token Expired - Please log in', 401);
+const handleJWTExpiredError = () =>
+	new APIError({
+		name: 'Error',
+		httpCode: HttpCode.BAD_REQUEST,
+		description: 'Expired Token - Please log in',
+		isOperational: false,
+	});
 
-const devError = (err, res) => {
-	res.status(err.statusCode).json({
-		status: err.status,
-		error: err,
+const devError = (err: APIError, res: Response) => {
+	res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
+		error: err.name,
 		message: err.message,
 		stack: err.stack,
 	});
 };
 
-const prodError = (err, res) => {
+const prodError = (err: APIError, res: Response) => {
 	// operational, trusted error
 	if (err.isOperational) {
-		res.status(err.statusCode).json({
-			status: err.status,
+		res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
+			status: err.name,
 			message: err.message,
 		});
 	}
@@ -45,15 +72,15 @@ const prodError = (err, res) => {
 		// eslint-disable-next-line no-console
 		console.error('Error - ', err);
 
-		res.status(500).json({
+		res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
 			status: 'error',
 			message: 'Something went wrong on our side',
 		});
 	}
 };
 
-export default (err, req, res, next) => {
-	err.statusCode = err.statusCode || 500;
+export default (err: any, _req: Request, res: Response, _next: NextFunction) => {
+	err.statusCode = err.statusCode || HttpCode.INTERNAL_SERVER_ERROR;
 	err.status = err.status || 'error';
 
 	if (process.env.NODE_ENV === 'development') {
