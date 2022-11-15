@@ -1,11 +1,12 @@
 {
 	"compilerOptions": {
-		"sourceMap": false,
+		"sourceMap": true,
 		"allowJs": false,
 		"target": "ES3",
 		"strict": true,
 		"module": "commonjs",
 		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true
+		"forceConsistentCasingInFileNames": true,
+		"types": ["node"]
 	}
 }

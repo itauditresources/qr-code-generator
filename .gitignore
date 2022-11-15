@@ -1,13 +1,9 @@
 
-# Node 
-
+# Dependencies
 node_modules
 
-# Replit
-
-.replit
-replit.nix
+# VS Code files
+.vscode 
 
 # Secrets
-
 .env

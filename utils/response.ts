@@ -3,12 +3,11 @@ export enum Body {
 	error = 'error',
 }
 
-export const createResponse = (success: Boolean, data: any, n?: Number) => {
+export const createResponse = (success: Boolean, data: any, n?: Number, message?: String) => {
 	return {
 		success: success ? 'success' : 'fail',
 		results: n ? n : null,
-		data: {
-			data,
-		},
+		message: message ? message : '',
+		data,
 	};
 };

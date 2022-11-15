@@ -1,37 +1,29 @@
 import mongoose from 'mongoose';
-const dotenv = require('dotenv').config();
 
 import app from './index';
-
-const uri = process.env.DB_URI || '';
-
-const options: object = {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-};
+import { config } from './config/config';
+import { Logging } from './utils/Logging';
 
 mongoose
-	.connect(uri, options)
-	.then(connection => console.log('Database is connected'))
-	.catch(err => console.log(err));
+	.connect(config.mongo.uri, config.mongo.options)
+	.then(_connection => Logging.info('Database is connected'))
+	.catch(err => Logging.error(err));
 
-const port: Number = process.env.PORT === 'PRODUCTION' ? +process.env['PORT'] : 3001;
-
-const server = app.listen(port, () => {
-	console.log(`[server]: Server is listening on https://127.0.0.1:/${port}/`);
+const server = app.listen(config.server.port, () => {
+	Logging.info(`[server]: Server is listening on https://127.0.0.1:/${config.server.port}/`);
 });
 
 // Shutting down the server and exit the nodejs process after an unhandled exception occurs
-process.on('uncaughtException', (err: Error) => {
-	console.error(err);
+process.on('uncaughtException', (err: any) => {
+	Logging.error(err);
 	server.close(() => {
 		process.exit(1);
 	});
 });
 
 // Shutting down the server and exit the nodejs process after an unhandled rejection occurs
-process.on('unhandledRejection', (err: Error) => {
-	console.error(err);
+process.on('unhandledRejection', (err: any) => {
+	Logging.error(err);
 	server.close(() => {
 		process.exit(1);
 	});

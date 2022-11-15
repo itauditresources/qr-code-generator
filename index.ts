@@ -2,21 +2,26 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 
-// import controllers
+// imports files
 import error from './controller/errorController';
-
-// import utilities
 import { APIError, HttpCode } from './utils/APIError';
-
-// import routers
 import staffRouter from './router/userRouter';
+import { Logging } from './utils/Logging';
 
 const app = express();
 
-// JSON BODY PARSING
+// MIDDLEWARE
 app.use(express.json());
 
-// USE STAFF ROUTER
+if (process.env.NODE_ENV === 'development') {
+	app.use((req: Request, _res: Response, next: NextFunction) => {
+		Logging.info(`${req.method} - ${req.url} - ${req.socket.remoteAddress}`);
+
+		next();
+	});
+}
+
+// ROUTERS
 app.use('/api/v1/users', staffRouter);
 
 // Serving static files
@@ -36,3 +41,6 @@ app.all('*', (req: Request, _res: Response, next: NextFunction) => {
 app.use(error);
 
 export default app;
+function next() {
+	throw new Error('Function not implemented.');
+}
