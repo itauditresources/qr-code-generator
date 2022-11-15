@@ -1,11 +1,11 @@
 {
 	"name": "vcard-generator",
 	"version": "1.0.0",
-	"description": "",
+	"description": "application to create and manage digital business cards",
 	"main": "index.js",
 	"scripts": {
-		"start": "nodemon server.ts",
 		"start:dev": "nodemon server.ts",
+		"start:prod": "SET NODE_ENV=production ts-node .",
 		"compile": "npx tsc",
 		"test": "mocha --require ts-node/register ./tests/*.test.ts"
 	},
@@ -18,7 +18,6 @@
 		"express": "^4.18.1",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.6.5",
-		"node-fetch": "^3.2.6",
 		"validator": "^13.7.0"
 	},
 	"devDependencies": {
