@@ -30,3 +30,39 @@ export const getUser = asyncWrapper(async (req: Request, res: Response, next: Ne
 
 	res.status(HttpCode.OK).json(createResponse(true, user, 1));
 });
+
+export const updateUser = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+	const { id } = req.params;
+
+	const user = await User.findById({ _id: new ObjectId(id) });
+
+	if (!user)
+		return next(
+			new APIError({
+				httpCode: HttpCode.NOT_FOUND,
+				description: `User with id: ${id} not found`,
+			})
+		);
+
+	user.set(req.body);
+
+	res.status(HttpCode.NO_CONTENT).json(createResponse(true, user, 1));
+});
+
+export const deleteUser = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+	const { id } = req.params;
+
+	const user = await User.findById({ _id: new ObjectId(id) });
+
+	if (!user)
+		return next(
+			new APIError({
+				httpCode: HttpCode.NOT_FOUND,
+				description: `User with id: ${id} not found`,
+			})
+		);
+
+	user.delete();
+
+	res.status(HttpCode.NO_CONTENT).json(createResponse(true));
+});

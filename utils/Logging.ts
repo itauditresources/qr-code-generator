@@ -36,29 +36,26 @@ export class Logging {
 	 * @returns void
 	 */
 	public static info = (args: string) =>
-		console.log(
-			`[TIME] ${print('green', new Date().toLocaleString())} [INFO] ${ColorPalette.FgGreen}${args}${
-				ColorPalette.Reset
-			}`
-		);
-	public static warn = (args: string) =>
-		console.log(
-			`[TIME] ${new Date().toLocaleString()} [INFO] ${ColorPalette.FgYellow}${args}${ColorPalette.Reset}`
-		);
-	public static error = (args: string) =>
-		console.log(`[TIME] ${new Date().toLocaleString()} [INFO] ${ColorPalette.FgRed}${args}${ColorPalette.Reset}`);
+		console.log(`[TIME] ${print('green', new Date().toLocaleString())} [INFO] ${print('green', args)}`);
 	public static log = (args: string) =>
-		console.log(`[TIME] ${new Date().toLocaleString()} [INFO] ${ColorPalette.FgWhite}${args}${ColorPalette.Reset}`);
+		console.log(`[TIME] ${print('white', new Date().toLocaleString())} [INFO] ${print('white', args)}`);
+	public static error = (args: string) =>
+		console.log(`[TIME] ${print('red', new Date().toLocaleString())} [INFO] ${print('red', args)}`);
+	public static warn = (args: string) =>
+		console.log(`[TIME] ${print('yellow', new Date().toLocaleString())} [INFO] ${print('yellow', args)}`);
 }
 
 const print = (color: string, data: string) => {
-	const colorArray: ColorPalette[] = Object.values(ColorPalette);
+	const colorKeys = Object.keys(ColorPalette);
+	const colorValues = Object.values(ColorPalette);
 
-	colorArray.forEach((value, index) => {
-		if (color === value.toLowerCase().slice(2)) {
-			console.log(color, index, colorArray[index], value.toLowerCase().slice(2));
+	let res: string = '';
 
-			return `${colorArray[index]}${data}${ColorPalette.Reset}`;
+	colorKeys.forEach((value, index) => {
+		if (color === value.toLowerCase().slice(2) && value.toLowerCase().slice(0, 2) === 'fg') {
+			res = colorValues[index];
 		}
 	});
+
+	return `${res}${data}${ColorPalette.Reset}`;
 };

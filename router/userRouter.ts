@@ -1,16 +1,16 @@
 import { Router } from 'express';
 
 import { login, register, protect } from '../controller/authenticationController';
-import { getAllUsers, getUser } from '../controller/userController';
+import { getAllUsers, getUser, updateUser, deleteUser } from '../controller/userController';
 
 const staffRouter = Router();
 
-// AUTHENTICATION ROUTES (tbp)
+// AUTHENTICATION ROUTES
 staffRouter.route('/login').post(login);
 staffRouter.route('/register').post(register);
 
 // USER ROUTES
 staffRouter.route('/').get(getAllUsers);
-staffRouter.route('/:id').get(getUser);
+staffRouter.route('/:id').get(getUser).put(updateUser).delete(deleteUser);
 
 export default staffRouter;

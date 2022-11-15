@@ -1,6 +1,7 @@
 // import dependencies
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
+import dotenv from 'dotenv';
 
 // imports files
 import error from './controller/errorController';
@@ -10,12 +11,14 @@ import { Logging } from './utils/Logging';
 
 const app = express();
 
+dotenv.config();
+
 // MIDDLEWARE
 app.use(express.json());
 
 if (process.env.NODE_ENV === 'development') {
 	app.use((req: Request, _res: Response, next: NextFunction) => {
-		Logging.info(`${req.method} - ${req.url} - ${req.socket.remoteAddress}`);
+		Logging.log(`${req.method} - ${req.url} - ${req.socket.remoteAddress}`);
 
 		next();
 	});
@@ -41,6 +44,3 @@ app.all('*', (req: Request, _res: Response, next: NextFunction) => {
 app.use(error);
 
 export default app;
-function next() {
-	throw new Error('Function not implemented.');
-}

@@ -1,11 +1,16 @@
 import { Document, Model } from 'mongoose';
 
 export interface IUser {
+	email: string;
+	password: string;
+	passwordConfirm: string;
 	name: string;
 	firstName: string;
 	department: string;
 	role: string;
-	email: string;
+	createdAt: Date;
+	changedAt: Date;
+	picture: string;
 }
 
 export interface IUserDocument extends IUser, Document {

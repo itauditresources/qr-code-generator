@@ -2,11 +2,12 @@
 	"compilerOptions": {
 		"sourceMap": true,
 		"allowJs": false,
-		"target": "ES3",
+		"target": "ES2015",
 		"strict": true,
 		"module": "commonjs",
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"types": ["node"]
-	}
+	},
+	"files": ["./tests/Logging.test.ts"]
 }
