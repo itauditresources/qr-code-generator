@@ -1,10 +1,10 @@
 import { Response, Request, NextFunction } from 'express';
 import { ObjectId } from 'mongodb';
 
-import { User } from '../model/user.model';
+import { User } from '../model/user/user.model';
 import asyncWrapper from '../utils/asyncWrapper';
 import { APIError, HttpCode } from '../utils/APIError';
-import { createResponse } from '../utils/response';
+import { createResponse } from '../utils/createResponse';
 
 // Hiding __v is going to prevent Mongoose from being able to find the model instance
 // (and update its __v) on a save unless you explicitly include those fields in the find method

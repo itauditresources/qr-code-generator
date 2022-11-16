@@ -1,28 +1,32 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, CookieOptions } from 'express';
 import bcrypt from 'bcrypt';
 import jsonwebtoken from 'jsonwebtoken';
-import { promisify } from 'util';
+import session from 'cookie-session';
+import connectRedis from 'connect-redis';
+import dotenv from 'dotenv';
 
-import { User } from '../model/user.model';
+import { User } from '../model/user/user.model';
 import asyncWrapper from '../utils/asyncWrapper';
 import { APIError, HttpCode } from '../utils/APIError';
-import { createResponse } from '../utils/response';
+import { createResponse } from '../utils/createResponse';
+
+dotenv.config();
 
 const generateToken = (id: string) => {
-	const jwt = new Promise((resolve, reject) => {
+	const jwt: Promise<string | undefined> = new Promise<string | undefined>((resolve, reject) => {
 		jsonwebtoken.sign(
-			id,
+			{ id },
 			process.env.SALT as string,
 			{
-				expiresIn: process.env.JWT_EXPIRES,
+				expiresIn: process.env.JWT_EXPIRES as string,
 			},
 			(err, token) => {
 				if (err) reject(err);
-
-				resolve(token);
+				else resolve(token);
 			}
 		);
 	});
+	return jwt;
 };
 
 export const login = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
@@ -34,12 +38,34 @@ export const login = asyncWrapper(async (req: Request, res: Response, next: Next
 	}
 });
 
-export const register = asyncWrapper(async (req: Request, res: Response, _next: NextFunction) => {
+export const register = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
 	const user = await User.create(req.body);
 
 	await user.save();
 
-	res.status(HttpCode.CREATED).json(createResponse(true, user, 1));
+	const token = await generateToken(user._id);
+
+	if (!token)
+		return next(
+			new APIError({
+				httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+				description: 'Could not create JWT',
+			})
+		);
+
+	const options: CookieOptions = {
+		// convert days into milliseconds
+		expires: new Date(((Date.now() + Number(process.env.COOKIE_EXPIRES)) as number) * 24 * 60 * 60 * 1000),
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production' ? true : false,
+	};
+
+	// Remove the password from the output
+	user.password = undefined;
+
+	res.cookie('jwt', token, options);
+
+	res.status(HttpCode.CREATED).json(createResponse(true, [token, user], 1));
 });
 
 export const protect =

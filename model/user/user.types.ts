@@ -2,7 +2,7 @@ import { Document, Model } from 'mongoose';
 
 export interface IUser {
 	email: string;
-	password: string;
+	password: string | undefined;
 	passwordConfirm: string;
 	name: string;
 	firstName: string;
