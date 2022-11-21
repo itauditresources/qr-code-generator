@@ -1,5 +1,8 @@
 # VCard Generator
 
+![Lines of code](https://img.shields.io/tokei/lines/github/itauditresources/vcard-generator)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/itauditresources/vcard-generator)
+
 This project is build on NodeJS version 18.2 and NPM version 8.9
 
 ## Builds
@@ -7,6 +10,8 @@ This project is build on NodeJS version 18.2 and NPM version 8.9
 run the dev build with `npm run start:dev`
 
 run production build with `npm run start:prod`
+
+To initialize the yarn SDK for VS Code run: `yarn dlx @yarnpkg/sdks vscode`
 
 ## Dependencies
 
