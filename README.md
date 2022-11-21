@@ -7,9 +7,9 @@ This project is build on NodeJS version 18.2 and NPM version 8.9
 
 ## Builds
 
-run the dev build with `npm run start:dev`
+run the dev build with `yarn run start:dev`
 
-run production build with `npm run start:prod`
+run production build with `yarn run start:prod`
 
 To initialize the yarn SDK for VS Code run: `yarn dlx @yarnpkg/sdks vscode`
 
