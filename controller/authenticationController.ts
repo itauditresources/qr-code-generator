@@ -32,14 +32,21 @@ const generateToken = (id: string) => {
 
 export const login = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-        const { email, password } = req.body;
+        const { email, password }: { email: string; password: string } =
+            req.body;
 
         const passwordEquals = await bcrypt.compare(
             password,
             process.env.HASH as string
         );
 
-        if (passwordEquals) {
+        if (!passwordEquals) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.CONFLICT,
+                    description: "Wrong email or password - Please try again",
+                })
+            );
         }
     }
 );
@@ -50,7 +57,7 @@ export const register = asyncWrapper(
 
         await user.save();
 
-        const token = await generateToken(user._id);
+        const token = await generateToken(String(user._id));
 
         if (!token)
             return next(
@@ -60,23 +67,23 @@ export const register = asyncWrapper(
                 })
             );
 
-        const options: CookieOptions = {
-            // convert days into milliseconds
-            expires: new Date(
-                ((Date.now() + Number(process.env.COOKIE_EXPIRES)) as number) *
-                    24 *
-                    60 *
-                    60 *
-                    1000
-            ),
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production" ? true : false,
-        };
+        // const options: CookieOptions = {
+        //     // convert days into milliseconds
+        //     expires: new Date(
+        //         ((Date.now() + Number(process.env.COOKIE_EXPIRES)) as number) *
+        //             24 *
+        //             60 *
+        //             60 *
+        //             1000
+        //     ),
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === "production" ? true : false,
+        // };
 
         // Remove the password from the output
         user.password = undefined;
 
-        res.cookie("jwt", token, options);
+        //res.cookie("jwt", token, options);
 
         res.status(HttpCode.CREATED).json(
             createResponse(true, [token, user], 1)
@@ -85,13 +92,13 @@ export const register = asyncWrapper(
 );
 
 export const protect =
-    (...roles: String[]) =>
+    (...roles: string[]) =>
     (req: Request, _res: Response, next: NextFunction) => {
         // protect routes based on user roles
         // default: user
         // req.user.role is set at the login middleware
         // @ts-ignore
-        if (!roles.includes(req.user.role))
+        if (!roles.includes(String(req.user.role)))
             return next(
                 new APIError({
                     httpCode: HttpCode.UNAUTHORIZED,

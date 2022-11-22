@@ -35,6 +35,16 @@ const handleValidationError = (err: any) => {
     });
 };
 
+const handleTypeError = (err: any) => {
+    const message = `Invalid input data. ${err.message}`;
+    return new APIError({
+        name: "Error",
+        httpCode: HttpCode.BAD_REQUEST,
+        description: message,
+        isOperational: false,
+    });
+};
+
 const handleJWTError = () =>
     new APIError({
         name: "Error",
@@ -98,6 +108,8 @@ export default (
         if (err.code === 11000) err = handleDuplicateKeyError(err);
         // MongoDB validation error
         if (err.name === "ValidationError") err = handleValidationError(err);
+        // MongoDB type error
+        if (err.name === "BSONTypeError") err = handleTypeError(err);
         // JWT Error
         if (err.name === "JsonWebTokenError") err = handleJWTError();
         // JWT Expiry Error

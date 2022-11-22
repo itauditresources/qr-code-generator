@@ -49,7 +49,7 @@ const print = (color: string, data: string) => {
 	const colorKeys = Object.keys(ColorPalette);
 	const colorValues = Object.values(ColorPalette);
 
-	let res: string = '';
+	let res = '';
 
 	colorKeys.forEach((value, index) => {
 		if (color === value.toLowerCase().slice(2) && value.toLowerCase().slice(0, 2) === 'fg') {
