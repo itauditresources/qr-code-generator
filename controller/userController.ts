@@ -53,9 +53,9 @@ export const updateUser = asyncWrapper(
                 })
             );
 
-        user.set(req.body);
+        user.save(req.body);
 
-        res.status(HttpCode.NO_CONTENT).json(createResponse(true, user, 1));
+        res.status(HttpCode.OK).json(createResponse(true, user, 1));
     }
 );
 

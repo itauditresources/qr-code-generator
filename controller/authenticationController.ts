@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, CookieOptions } from "express";
+import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 import session from "cookie-session";
@@ -48,12 +48,20 @@ export const login = asyncWrapper(
                 })
             );
         }
+
+        res.status(HttpCode.OK).json(createResponse(true, "Successful login"));
     }
 );
 
 export const register = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-        const user = await User.create(req.body);
+        const user = await User.create({
+            name: req.body.name,
+            firstName: req.body.firstName,
+            email: req.body.email,
+            password: req.body.password,
+            passwordConfirm: req.body.passwordConfirm,
+        });
 
         await user.save();
 
@@ -82,6 +90,7 @@ export const register = asyncWrapper(
 
         // Remove the password from the output
         user.password = undefined;
+        user.passwordConfirm = undefined;
 
         //res.cookie("jwt", token, options);
 

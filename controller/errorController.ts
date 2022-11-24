@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+
 import { APIError, HttpCode } from "../utils/APIError";
 import { Logging } from "../utils/Logging";
 
@@ -8,7 +9,7 @@ const handleCastError = (err: any) => {
         name: "Error",
         httpCode: HttpCode.NO_CONTENT,
         description: message,
-        isOperational: false,
+        isOperational: true,
     });
 };
 
@@ -20,7 +21,7 @@ const handleDuplicateKeyError = (err: any) => {
         name: "Error",
         httpCode: HttpCode.CONFLICT,
         description: message,
-        isOperational: false,
+        isOperational: true,
     });
 };
 
@@ -31,17 +32,18 @@ const handleValidationError = (err: any) => {
         name: "Error",
         httpCode: HttpCode.UNPROCESSABLE_ENTITY,
         description: message,
-        isOperational: false,
+        isOperational: true,
     });
 };
 
 const handleTypeError = (err: any) => {
+    console.log(err.constructor);
     const message = `Invalid input data. ${err.message}`;
     return new APIError({
         name: "Error",
         httpCode: HttpCode.BAD_REQUEST,
         description: message,
-        isOperational: false,
+        isOperational: true,
     });
 };
 
@@ -50,7 +52,7 @@ const handleJWTError = () =>
         name: "Error",
         httpCode: HttpCode.BAD_REQUEST,
         description: "Invalid Token - Please log in",
-        isOperational: false,
+        isOperational: true,
     });
 
 const handleJWTExpiredError = () =>
@@ -58,7 +60,7 @@ const handleJWTExpiredError = () =>
         name: "Error",
         httpCode: HttpCode.BAD_REQUEST,
         description: "Expired Token - Please log in",
-        isOperational: false,
+        isOperational: true,
     });
 
 const devError = (err: APIError, res: Response) => {

@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(helmet());
 
 // REDUCE SERVER FINGERPRINT
-// just prevents casual exploits
+// only prevents casual exploits
 app.disable("x-powered-by");
 
 // ROUTERS
