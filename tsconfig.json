@@ -7,8 +7,8 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
+
         "types": ["node"]
     },
-    "exclude": []
-    //"files": ["./tests/Logging.test.ts"]
+    "include": ["src/**/*", "./.eslintrc.cjs", "*", "*.cjs", "tests/*"]
 }

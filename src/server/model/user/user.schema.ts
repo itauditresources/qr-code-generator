@@ -1,13 +1,9 @@
 import validator from "validator";
 import { Schema } from "mongoose";
-import { findOneOrCreate, findByAge } from "./user.statics";
-import { setLastUpdated, sameLastName } from "./user.methods";
 
-/**
- * MongoDB user schema
- *
- * Define all user properties
- */
+// MongoDB user schema
+
+// Define all user properties
 
 const userSchema = new Schema({
     email: {
@@ -80,10 +76,5 @@ const userSchema = new Schema({
         type: Buffer,
     },
 });
-
-userSchema.statics.findOneOrCreate = findOneOrCreate;
-userSchema.statics.findByAge = findByAge;
-userSchema.methods.setLastUpdated = setLastUpdated;
-userSchema.methods.sameLastName = sameLastName;
 
 export default userSchema;

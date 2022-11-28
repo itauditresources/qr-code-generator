@@ -2,11 +2,15 @@ import mongoose from "mongoose";
 
 import app from "./index";
 import { config } from "./config/config";
-import { Logging } from "./utils/Logging";
+import { Logging } from "../../utils/Logging";
 
 mongoose
     .connect(config.mongo.uri, config.mongo.options)
-    .then((_connection) => Logging.info("Database is connected"))
+    .then((connection) =>
+        Logging.info(
+            `Database connected on port: ${connection.connection.port}`
+        )
+    )
     .catch((err) => Logging.error(err));
 
 const server = app.listen(config.server.port, () => {

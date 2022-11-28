@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-import { APIError, HttpCode } from "../utils/APIError";
-import { Logging } from "../utils/Logging";
+import { APIError, HttpCode } from "../../../utils/APIError";
+import { Logging } from "../../../utils/Logging";
 
 const handleCastError = (err: any) => {
     const message = `Invalid ${err.path}: ${err.path}`;

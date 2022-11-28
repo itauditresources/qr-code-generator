@@ -5,9 +5,9 @@ import session from "cookie-session";
 import dotenv from "dotenv";
 
 import { User } from "../model/user/user.model";
-import asyncWrapper from "../utils/asyncWrapper";
-import { APIError, HttpCode } from "../utils/APIError";
-import { createResponse } from "../utils/createResponse";
+import asyncWrapper from "../../../utils/asyncWrapper";
+import { APIError, HttpCode } from "../../../utils/APIError";
+import { createResponse } from "../../../utils/createResponse";
 
 dotenv.config();
 
@@ -35,10 +35,9 @@ export const login = asyncWrapper(
         const { email, password }: { email: string; password: string } =
             req.body;
 
-        const passwordEquals = await bcrypt.compare(
-            password,
-            process.env.HASH as string
-        );
+        const user = User.findOne({ email });
+
+        const passwordEquals = await bcrypt.compare(password, "");
 
         if (!passwordEquals) {
             return next(
@@ -89,8 +88,8 @@ export const register = asyncWrapper(
         // };
 
         // Remove the password from the output
-        user.password = undefined;
-        user.passwordConfirm = undefined;
+        user.password = "";
+        user.passwordConfirm = "";
 
         //res.cookie("jwt", token, options);
 
