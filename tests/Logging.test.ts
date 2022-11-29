@@ -1,7 +1,7 @@
 import assert from "assert/strict";
 import { describe, it } from "mocha";
 
-import { ColorPalette } from "../utils/Logging";
+import { ColorPalette } from "../src/server/utils/Logging";
 
 describe("Logging module", function () {
     it("print function should return the right color from the palette", function () {

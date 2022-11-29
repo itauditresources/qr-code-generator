@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
-import session from "cookie-session";
+import session from "express-session";
 import dotenv from "dotenv";
 
 import { User } from "../model/user/user.model";
-import asyncWrapper from "../../../utils/asyncWrapper";
-import { APIError, HttpCode } from "../../../utils/APIError";
-import { createResponse } from "../../../utils/createResponse";
+import asyncWrapper from "../utils/asyncWrapper";
+import { APIError, HttpCode } from "../utils/APIError";
+import { createResponse } from "../utils/createResponse";
 
 dotenv.config();
 
@@ -105,8 +105,10 @@ export const protect =
         // protect routes based on user roles
         // default: user
         // req.user.role is set at the login middleware
-        // @ts-ignore
-        if (!roles.includes(String(req.user.role)))
+        //@ts-ignore
+        const role = req.user.role;
+
+        if (!roles.includes(String(role)))
             return next(
                 new APIError({
                     httpCode: HttpCode.UNAUTHORIZED,

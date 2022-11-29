@@ -8,11 +8,11 @@ import dotenv from "dotenv";
 
 // imports files
 import error from "./controller/errorController";
-import { APIError, HttpCode } from "../../utils/APIError";
+import { APIError, HttpCode } from "./utils/APIError";
 import staffRouter from "./router/userRouter";
-import { Logging } from "../../utils/Logging";
+import { Logging } from "./utils/Logging";
 import { options } from "../server/config/config";
-import { createResponse } from "../../utils/createResponse";
+import { createResponse } from "./utils/createResponse";
 
 const app = express();
 
