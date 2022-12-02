@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction, urlencoded } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import session from "express-session";
 import helmet from "helmet";
 import rateLimiter from "rate-limiter-flexible";
@@ -9,9 +9,14 @@ import error from "./controller/errorController";
 import { APIError, HttpCode } from "./utils/APIError";
 import staffRouter from "./router/userRouter";
 import { Logging } from "./utils/Logging";
-import { options } from "../server/config/config";
-import { createResponse } from "./utils/createResponse";
 import { setHeaders } from "./middleware/setSecureHeaders";
+import { redisClient, RedisStore } from "./database/redis";
+import {
+    cookieOptions,
+    rateLimiterOptions,
+    REDIS_HOST,
+    REDIS_PORT,
+} from "./config/config";
 
 const app = express();
 
@@ -33,42 +38,35 @@ if (process.env.NODE_ENV === "development") {
 // prevents DDOS and DOS attacks
 // I implement a more sophisticated rate limiter as soon as I have redis up and running
 // Use the Session UUID to identify access
-const rateLimiter_ = new rateLimiter.RateLimiterMemory(options);
+const rateLimiter_ = new rateLimiter.RateLimiterMemory(rateLimiterOptions);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
     rateLimiter_
         .consume(req.socket.remoteAddress || req.ip, 1)
         .then((rateLimiterRes) => {
-            const headers = {
-                "Retry-After": rateLimiterRes.msBeforeNext / 1000,
-                "X-RateLimit-Limit": options.points,
-                "X-RateLimit-Remaining": rateLimiterRes.remainingPoints,
-                "X-RateLimit-Reset": new Date(
-                    Date.now() + rateLimiterRes.msBeforeNext
-                ),
-            };
-
-            for (let i = 0; i < Object.keys(headers).length; ++i) {
-                res.setHeader(
-                    Object.keys(headers)[i],
-                    String(Object.values(headers)[i])
-                );
-            }
-
-            next();
+            setHeaders(res, next, rateLimiterRes);
         })
-        .catch((_rateLimiterRes) =>
+        .catch((rateLimiterRes) => {
             next(
                 new APIError({
                     httpCode: HttpCode.BAD_GATEWAY,
                     description:
                         "Too many network requests - Please try again later",
                 })
-            )
-        );
+            );
+        });
 });
 
-//app.use(session);
+app.use(
+    session({
+        secret: "my new secret",
+        store: new RedisStore({ client: redisClient }),
+        resave: false,
+        saveUninitialized: false,
+        name: "session",
+        cookie: cookieOptions,
+    })
+);
 
 // set secure HTTP headers
 app.use(helmet());
@@ -91,21 +89,6 @@ app.all("*", (req: Request, _res: Response, next: NextFunction) => {
             description: `Cannot find ${req.originalUrl} on this server`,
         })
     );
-});
-
-app.all("*", (req: Request, _res: Response, next: NextFunction) => {
-    console.log(req.session);
-
-    if (!req.session)
-        next(
-            new APIError({
-                httpCode: HttpCode.CONFLICT,
-                description: "Session destroyed",
-            })
-        );
-
-    // continue otherwise
-    next();
 });
 
 // ERROR HANDLING

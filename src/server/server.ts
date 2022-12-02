@@ -1,23 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import mongoose from "mongoose";
 
 import app from "./index";
-import { config } from "./config/config";
+import mongodb from "./database/mongodb";
+import { port } from "./config/config";
 import { Logging } from "./utils/Logging";
 
-mongoose
-    .connect(config.mongo.uri, config.mongo.options)
-    .then((connection) =>
-        Logging.info(
-            `Database connected on port: ${connection.connection.port}`
-        )
-    )
-    .catch((err: any) => Logging.error(err));
+void (async () => {
+    await mongodb;
+})();
 
-const server = app.listen(config.server.port, () => {
+const server = app.listen(port, () => {
     Logging.info(
-        `[server]: Server is listening on https://127.0.0.1:/${config.server.port}/`
+        `[server]: Server is listening on https://127.0.0.1:/${port}/`
     );
 });
 

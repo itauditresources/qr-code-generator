@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
-import session from "express-session";
+
 import dotenv from "dotenv";
 
-import { IUser, User } from "../model/user/User";
+import { User } from "../model/user/User";
 import asyncWrapper from "../utils/asyncWrapper";
 import { APIError, HttpCode } from "../utils/APIError";
 import { createResponse } from "../utils/createResponse";
@@ -72,19 +72,6 @@ export const register = asyncWrapper(
                     description: "Could not create JWT",
                 })
             );
-
-        // const options: CookieOptions = {
-        //     // convert days into milliseconds
-        //     expires: new Date(
-        //         ((Date.now() + Number(process.env.COOKIE_EXPIRES)) as number) *
-        //             24 *
-        //             60 *
-        //             60 *
-        //             1000
-        //     ),
-        //     httpOnly: true,
-        //     secure: process.env.NODE_ENV === "production" ? true : false,
-        // };
 
         // Remove the password from the output
         user.password = "";
