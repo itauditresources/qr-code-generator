@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import mongoose from "mongoose";
 
-import { User } from "../model/user/user.model";
+import { User } from "../model/user/User";
 import asyncWrapper from "../utils/asyncWrapper";
 import { APIError, HttpCode } from "../utils/APIError";
 import { createResponse } from "../utils/createResponse";

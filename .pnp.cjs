@@ -36,6 +36,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/mocha", "npm:10.0.0"],\
             ["@types/mongoose", "npm:5.11.97"],\
             ["@types/node", "npm:18.11.9"],\
+            ["@types/nodemailer", "npm:6.4.6"],\
             ["@types/validator", "npm:13.7.10"],\
             ["@typescript-eslint/eslint-plugin", "virtual:c7ea6a77b97e141fb5f56b52c044ce959d34892eede47f993537fe12c6475e1b655f13cc01b310e8b358fd3d12b9f57cbdc40a92b0d69957eb572b6686c71d1a#npm:5.44.0"],\
             ["@typescript-eslint/parser", "virtual:c7ea6a77b97e141fb5f56b52c044ce959d34892eede47f993537fe12c6475e1b655f13cc01b310e8b358fd3d12b9f57cbdc40a92b0d69957eb572b6686c71d1a#npm:5.44.0"],\
@@ -49,6 +50,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonwebtoken", "npm:8.5.1"],\
             ["mocha", "npm:10.1.0"],\
             ["mongoose", "npm:6.7.2"],\
+            ["nodemailer", "npm:6.8.0"],\
             ["nodemon", "npm:2.0.20"],\
             ["rate-limiter-flexible", "npm:2.4.1"],\
             ["redis", "npm:4.5.1"],\
@@ -1471,6 +1473,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ["npm:18.11.9", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-18.11.9-d21dd6ec05-cc0aae109e.zip/node_modules/@types/node/",\
           "packageDependencies": [\
+            ["@types/node", "npm:18.11.9"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/nodemailer", [\
+        ["npm:6.4.6", {\
+          "packageLocation": "./.yarn/cache/@types-nodemailer-npm-6.4.6-fafdca37fd-c5ba1b83a2.zip/node_modules/@types/nodemailer/",\
+          "packageDependencies": [\
+            ["@types/nodemailer", "npm:6.4.6"],\
             ["@types/node", "npm:18.11.9"]\
           ],\
           "linkType": "HARD"\
@@ -4212,6 +4224,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["nodemailer", [\
+        ["npm:6.8.0", {\
+          "packageLocation": "./.yarn/cache/nodemailer-npm-6.8.0-8280b33fb7-e1827df714.zip/node_modules/nodemailer/",\
+          "packageDependencies": [\
+            ["nodemailer", "npm:6.8.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["nodemon", [\
         ["npm:2.0.20", {\
           "packageLocation": "./.yarn/unplugged/nodemon-npm-2.0.20-2fea8f7bf9/node_modules/nodemon/",\
@@ -5356,6 +5377,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/mocha", "npm:10.0.0"],\
             ["@types/mongoose", "npm:5.11.97"],\
             ["@types/node", "npm:18.11.9"],\
+            ["@types/nodemailer", "npm:6.4.6"],\
             ["@types/validator", "npm:13.7.10"],\
             ["@typescript-eslint/eslint-plugin", "virtual:c7ea6a77b97e141fb5f56b52c044ce959d34892eede47f993537fe12c6475e1b655f13cc01b310e8b358fd3d12b9f57cbdc40a92b0d69957eb572b6686c71d1a#npm:5.44.0"],\
             ["@typescript-eslint/parser", "virtual:c7ea6a77b97e141fb5f56b52c044ce959d34892eede47f993537fe12c6475e1b655f13cc01b310e8b358fd3d12b9f57cbdc40a92b0d69957eb572b6686c71d1a#npm:5.44.0"],\
@@ -5369,6 +5391,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonwebtoken", "npm:8.5.1"],\
             ["mocha", "npm:10.1.0"],\
             ["mongoose", "npm:6.7.2"],\
+            ["nodemailer", "npm:6.8.0"],\
             ["nodemon", "npm:2.0.20"],\
             ["rate-limiter-flexible", "npm:2.4.1"],\
             ["redis", "npm:4.5.1"],\

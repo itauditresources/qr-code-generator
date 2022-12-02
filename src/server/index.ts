@@ -1,18 +1,17 @@
-// import dependencies
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction, urlencoded } from "express";
 import session from "express-session";
 import helmet from "helmet";
 import rateLimiter from "rate-limiter-flexible";
 import path from "path";
 import dotenv from "dotenv";
 
-// imports files
 import error from "./controller/errorController";
 import { APIError, HttpCode } from "./utils/APIError";
 import staffRouter from "./router/userRouter";
 import { Logging } from "./utils/Logging";
 import { options } from "../server/config/config";
 import { createResponse } from "./utils/createResponse";
+import { setHeaders } from "./middleware/setSecureHeaders";
 
 const app = express();
 
@@ -32,24 +31,42 @@ if (process.env.NODE_ENV === "development") {
 
 // rate limiter
 // prevents DDOS and DOS attacks
-// const rateLimiter_ = new rateLimiter.RateLimiterMemory(options);
+// I implement a more sophisticated rate limiter as soon as I have redis up and running
+// Use the Session UUID to identify access
+const rateLimiter_ = new rateLimiter.RateLimiterMemory(options);
 
-// app.all("*", (req: Request, res: Response, next: NextFunction) => {
-//     rateLimiter_
-//         .consume(req.socket.remoteAddress || req.ip, 1)
-//         .then((RateLimiterRes) => {
-//             res.status(HttpCode.OK).json(createResponse(true, RateLimiterRes));
-//         })
-//         .catch((RateLimiterRes: any) =>
-//             next(
-//                 new APIError({
-//                     httpCode: HttpCode.BAD_GATEWAY,
-//                     description:
-//                         "Too many network requests - Please try again later",
-//                 })
-//             )
-//         );
-// });
+app.all("*", (req: Request, res: Response, next: NextFunction) => {
+    rateLimiter_
+        .consume(req.socket.remoteAddress || req.ip, 1)
+        .then((rateLimiterRes) => {
+            const headers = {
+                "Retry-After": rateLimiterRes.msBeforeNext / 1000,
+                "X-RateLimit-Limit": options.points,
+                "X-RateLimit-Remaining": rateLimiterRes.remainingPoints,
+                "X-RateLimit-Reset": new Date(
+                    Date.now() + rateLimiterRes.msBeforeNext
+                ),
+            };
+
+            for (let i = 0; i < Object.keys(headers).length; ++i) {
+                res.setHeader(
+                    Object.keys(headers)[i],
+                    String(Object.values(headers)[i])
+                );
+            }
+
+            next();
+        })
+        .catch((_rateLimiterRes) =>
+            next(
+                new APIError({
+                    httpCode: HttpCode.BAD_GATEWAY,
+                    description:
+                        "Too many network requests - Please try again later",
+                })
+            )
+        );
+});
 
 //app.use(session);
 
@@ -76,10 +93,9 @@ app.all("*", (req: Request, _res: Response, next: NextFunction) => {
     );
 });
 
-// ERROR HANDLING
-app.use(error);
+app.all("*", (req: Request, _res: Response, next: NextFunction) => {
+    console.log(req.session);
 
-app.use((req: Request, _res: Response, next: NextFunction) => {
     if (!req.session)
         next(
             new APIError({
@@ -91,5 +107,8 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
     // continue otherwise
     next();
 });
+
+// ERROR HANDLING
+app.use(error);
 
 export default app;

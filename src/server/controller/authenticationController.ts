@@ -4,10 +4,11 @@ import jsonwebtoken from "jsonwebtoken";
 import session from "express-session";
 import dotenv from "dotenv";
 
-import { User } from "../model/user/user.model";
+import { IUser, User } from "../model/user/User";
 import asyncWrapper from "../utils/asyncWrapper";
 import { APIError, HttpCode } from "../utils/APIError";
 import { createResponse } from "../utils/createResponse";
+import { TypedRequestBody } from "../library/typedRequest";
 
 dotenv.config();
 
@@ -31,7 +32,11 @@ const generateToken = (id: string) => {
 };
 
 export const login = asyncWrapper(
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (
+        req: TypedRequestBody<{ email: string; password: string }>,
+        res: Response,
+        next: NextFunction
+    ) => {
         const { email, password }: { email: string; password: string } =
             req.body;
 
@@ -54,13 +59,7 @@ export const login = asyncWrapper(
 
 export const register = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-        const user = await User.create({
-            name: req.body.name,
-            firstName: req.body.firstName,
-            email: req.body.email,
-            password: req.body.password,
-            passwordConfirm: req.body.passwordConfirm,
-        });
+        const user = await User.create(req.body);
 
         await user.save();
 
@@ -98,23 +97,3 @@ export const register = asyncWrapper(
         );
     }
 );
-
-export const protect =
-    (...roles: string[]) =>
-    (req: Request, _res: Response, next: NextFunction) => {
-        // protect routes based on user roles
-        // default: user
-        // req.user.role is set at the login middleware
-        //@ts-ignore
-        const role = req.user.role;
-
-        if (!roles.includes(String(role)))
-            return next(
-                new APIError({
-                    httpCode: HttpCode.UNAUTHORIZED,
-                    description: "You do not have access to this resource",
-                })
-            );
-
-        next();
-    };

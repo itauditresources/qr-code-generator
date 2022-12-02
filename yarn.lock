@@ -1236,6 +1236,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/nodemailer@npm:^6.4.6":
+  version: 6.4.6
+  resolution: "@types/nodemailer@npm:6.4.6"
+  dependencies:
+    "@types/node": "*"
+  checksum: c5ba1b83a28eb13778c54333ebe5fdd40555ce6df9dea672acb5682f872e83cae2e538ceeb64c7b064a2c7e7dc836d5a250ec7174795c5a61cb3a3fb90f3dceb
+  languageName: node
+  linkType: hard
+
 "@types/qs@npm:*":
   version: 6.9.7
   resolution: "@types/qs@npm:6.9.7"
@@ -3527,6 +3536,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nodemailer@npm:^6.8.0":
+  version: 6.8.0
+  resolution: "nodemailer@npm:6.8.0"
+  checksum: e1827df714d207a00f1bf8012e767826862467b72440fc9c37cf238a14d01a4c591b7657f4d1805bfb2764883c07aa9f2e31ee96a5fec51ccf1e6ad6dd01bd1d
+  languageName: node
+  linkType: hard
+
 "nodemon@npm:^2.0.20":
   version: 2.0.20
   resolution: "nodemon@npm:2.0.20"
@@ -4520,6 +4536,7 @@ __metadata:
     "@types/mocha": ^10.0.0
     "@types/mongoose": ^5.11.97
     "@types/node": ^18.11.9
+    "@types/nodemailer": ^6.4.6
     "@types/validator": ^13.7.10
     "@typescript-eslint/eslint-plugin": ^5.44.0
     "@typescript-eslint/parser": ^5.44.0
@@ -4533,6 +4550,7 @@ __metadata:
     jsonwebtoken: ^8.5.1
     mocha: ^10.1.0
     mongoose: ^6.7.2
+    nodemailer: ^6.8.0
     nodemon: ^2.0.20
     rate-limiter-flexible: ^2.4.1
     redis: ^4.5.1

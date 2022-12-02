@@ -1,10 +1,20 @@
+/*
+Since we accept different types of errors which are not always 
+defined in their type declaration file we ignore the errors 
+
+Might declare a types.d.ts file in production instead!
+*/
+
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Request, Response, NextFunction } from "express";
 
 import { APIError, HttpCode } from "../utils/APIError";
 import { Logging } from "../utils/Logging";
 
 const handleCastError = (err: any) => {
-    const message = `Invalid ${err.path}: ${err.path}`;
+    const message = `Invalid ${String(err.path)}: ${String(err.path)}`;
     return new APIError({
         name: "Error",
         httpCode: HttpCode.NO_CONTENT,
@@ -16,7 +26,9 @@ const handleCastError = (err: any) => {
 const handleDuplicateKeyError = (err: any) => {
     // search in keyValue to get the field
     const value = err.keyValue[Object.keys(err.keyValue)[0]];
-    const message = `Duplicate field value: "${value}". Please use an other value.`;
+    const message = `Duplicate field value: "${String(
+        value
+    )}". Please use an other value.`;
     return new APIError({
         name: "Error",
         httpCode: HttpCode.CONFLICT,
@@ -38,7 +50,7 @@ const handleValidationError = (err: any) => {
 
 const handleTypeError = (err: any) => {
     console.log(err.constructor);
-    const message = `Invalid input data. ${err.message}`;
+    const message = `Invalid input data. ${String(err.message)}`;
     return new APIError({
         name: "Error",
         httpCode: HttpCode.BAD_REQUEST,
@@ -63,7 +75,8 @@ const handleJWTExpiredError = () =>
         isOperational: true,
     });
 
-const devError = (err: APIError, res: Response) => {
+const devError = (err: any, res: Response) => {
+    Logging.error(`Error - ${String(err)}`);
     res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
         error: err.name,
         message: err.message,
@@ -71,7 +84,7 @@ const devError = (err: APIError, res: Response) => {
     });
 };
 
-const prodError = (err: APIError, res: Response) => {
+const prodError = (err: any, res: Response) => {
     // operational, trusted error
     if (err.isOperational) {
         res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
@@ -82,8 +95,7 @@ const prodError = (err: APIError, res: Response) => {
     // programming error - don't leak information about it
     else {
         // log the error
-        // eslint-disable-next-line no-console
-        Logging.error(`Error - ${err}`);
+        Logging.error(`Error - ${String(err)}`);
 
         res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
             status: "error",

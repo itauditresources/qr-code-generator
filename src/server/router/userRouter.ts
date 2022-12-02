@@ -1,10 +1,6 @@
 import { Router } from "express";
 
-import {
-    login,
-    register,
-    protect,
-} from "../controller/authenticationController";
+import { login, register } from "../controller/authenticationController";
 import {
     getAllUsers,
     getUser,

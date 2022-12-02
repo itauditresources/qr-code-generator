@@ -30,8 +30,8 @@ export const config = {
 
 // REDIS session storage settings
 
-const REDIS_HOST = process.env.REDIS_HOST as string;
-const REDIS_PORT = process.env.REDIS_PORT as unknown as number;
+//const REDIS_HOST = process.env.REDIS_HOST as string;
+//const REDIS_PORT = process.env.REDIS_PORT as unknown as number;
 
 // RATE_LIMITER settings
 
@@ -39,10 +39,3 @@ export const options = {
     points: 6, // Total points available per ID
     duration: 1, // Seconds between requests
 };
-
-// RateLimiterRes = {
-//    msBeforeNext: 250, // Number of milliseconds before next action can be done
-//    remainingPoints: 0, // Number of remaining points in current duration
-//    consumedPoints: 5, // Number of consumed points in current duration
-//    isFirstInDuration: false, // action is first in current duration
-// };

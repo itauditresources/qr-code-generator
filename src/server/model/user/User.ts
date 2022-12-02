@@ -1,26 +1,31 @@
+/*
+############### WARNING #################
+
+Mongoose is a ODM (Object Data Modelling) tool and runs on top of the 
+native mongo-db driver, adding an additional abstraction layer.
+
+If you make any changes on the Mongoose schemas keep in mind
+to change the respective existing entries in the MongoDB Collection!!
+
+Since Mongoose creates its own data models, MongoDB doesn't know about 
+our database schema and will not type check, validate and recursively change data types.
+
+I will most likely replace Mongoose with the native MongoDB driver in a production 
+environment to reduce abstraction and a potential source of errors. 
+*/
+
 import validator from "validator";
-import {
-    Schema,
-    HydratedDocument,
-    InferSchemaType,
-    Model,
-    model,
-} from "mongoose";
+import { Schema, InferSchemaType, Model, model } from "mongoose";
 
-interface IUserMethods {
-    fullName(): string;
-}
-
-interface IUserModel extends Model<IUser, {}, IUserMethods> {
-    createWithFullName(
-        name: string
-    ): Promise<HydratedDocument<IUser, IUserMethods>>;
-}
+type Password = {
+    password: string;
+    passwordConfirm: string;
+};
 
 // MongoDB user schema
 // Define all user properties
 
-const userSchema = new Schema<IUser, IUserModel, IUserMethods>({
+const userSchema = new Schema({
     email: {
         type: String,
         required: [true, "Provide your company email address"],
@@ -30,7 +35,8 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>({
             validator: function (value: string): boolean {
                 return validator.isEmail(value);
             },
-            message: "This is not a valid email address",
+            message: (props: { value: string }) =>
+                `${props.value} is not a valid email address`,
         },
     },
     password: {
@@ -40,7 +46,7 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>({
         minlength: [8, "Your password needs to be at least 8 characters long"],
         maxlength: [
             15,
-            "Your password should contain more than 15 characters long",
+            "Your password should not contain more than 15 characters long",
         ],
         select: false,
     },
@@ -51,7 +57,7 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>({
         minlength: [8, "Your password needs to be at least 8 characters long"],
         maxlength: [
             15,
-            "Your password should contain more than 15 characters long",
+            "Your password should not contain more than 15 characters long",
         ],
         validate: {
             validator: function (value: string): boolean {
@@ -78,9 +84,12 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>({
     },
     role: {
         type: String,
+        trim: true,
         required: [true, "Provide your current role"],
-        enum: ["admin", "user", "moderator"],
-        default: "user",
+        enum: {
+            values: ["admin", "user", "moderator"],
+            message: "{VALUE} is not a valid role",
+        },
     },
     createdAt: {
         type: Date,
@@ -92,30 +101,19 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>({
     },
 });
 
-// create instance methods which will run on the instance of a model
+// Validation methods
 
-userSchema.method("fullName", function fullName(): string {
-    return this.firstName, this.lastName;
-});
+// Middleware functions
+
+// create instance methods which will run on the instance of a model
 
 // Static MongoDB methods which are called on the respective model
 
-userSchema.static(
-    "createWithFullName",
-    function createWithFullName(name: string) {
-        const [firstName, lastName] = name.split(" ");
-        return this.create({ firstName, lastName });
-    }
-);
+// Infer data types of the MongoDB schema
+export type IUser = InferSchemaType<typeof userSchema>;
 
-// Variable types of the MongoDB schema
-
-// Define the types to enable type linting in all files
-
-type IUser = InferSchemaType<typeof userSchema>;
-
-interface IUserDocument extends Model<IUser> {}
+export type IUserDocument = Model<IUser>;
 
 // Put everything together in a MongoDB model
 
-export const User = model<IUser, IUserModel>("User", userSchema);
+export const User = model<IUser>("User", userSchema);
