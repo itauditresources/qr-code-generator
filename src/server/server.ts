@@ -12,7 +12,8 @@ void (async () => {
 
 const server = app.listen(port, () => {
     Logging.info(
-        `[server]: Server is listening on https://127.0.0.1:/${port}/`
+        `Server is listening on https://127.0.0.1:/${port}/`,
+        "SERVER"
     );
 });
 

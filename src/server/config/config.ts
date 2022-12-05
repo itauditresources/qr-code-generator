@@ -1,38 +1,116 @@
 import dotenv from "dotenv";
 import { CookieOptions } from "express-session";
+import path from "path";
 import { RedisClientOptions } from "redis";
+import { Logging } from "../utils/Logging";
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 // MONGODB driver settings
+interface ENV {
+    NODE_ENV: string | undefined;
+    PORT: number | undefined;
+    MONGODB_USERNAME: string | undefined;
+    MONGODB_PASSWORD: string | undefined;
+    MONGODB_DB_NAME: string | undefined;
+    MONGODB_URI: string | undefined;
+    SALT: string | undefined;
+    JWT_EXPIRES: number | undefined;
+    COOKIE_EXPIRES: number | undefined;
+    REDIS_USERNAME: string | undefined;
+    REDIS_PASSWORD: string | undefined;
+    REDIS_HOST: string | undefined;
+    REDIS_PORT: number | undefined;
+    SMTP_HOST: string | undefined;
+    SMTP_PORT: number | undefined;
+    SMTP_USERNAME: string | undefined;
+    SMTP_PASSWORD: string | undefined;
+}
 
-const MONGODB_USERNAME = process.env.MONGODB_USERNAME as string;
-const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD as string;
-const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME as string;
-const MONGODB_URI = `mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@cluster0.dvgqk1v.mongodb.net/${MONGODB_DB_NAME}`;
+interface Config {
+    NODE_ENV: string;
+    PORT: number;
+    MONGODB_USERNAME: string;
+    MONGODB_PASSWORD: string;
+    MONGODB_DB_NAME: string;
+    MONGODB_URI: string;
+    SALT: string;
+    JWT_EXPIRES: number;
+    COOKIE_EXPIRES: number;
+    REDIS_USERNAME: string;
+    REDIS_PASSWORD: string;
+    REDIS_HOST: string;
+    REDIS_PORT: number;
+    SMTP_HOST: string;
+    SMTP_PORT: number;
+    SMTP_USERNAME: string;
+    SMTP_PASSWORD: string;
+}
+
+const getConfig = (): ENV => {
+    return {
+        NODE_ENV: process.env.NODE_ENV,
+        PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
+        MONGODB_USERNAME: process.env.MONGODB_USERNAME,
+        MONGODB_PASSWORD: process.env.MONGODB_PASSWORD,
+        MONGODB_DB_NAME: process.env.MONGODB_DB_NAME,
+        MONGODB_URI: process.env.MONGODB_URI,
+        SALT: process.env.SALT,
+        JWT_EXPIRES: process.env.JWT_EXPIRES
+            ? Number(process.env.JWT_EXPIRES)
+            : undefined,
+        COOKIE_EXPIRES: process.env.COOKIE_EXPIRES
+            ? Number(process.env.COOKIE_EXPIRES)
+            : undefined,
+        REDIS_USERNAME: process.env.REDIS_USERNAME,
+        REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+        REDIS_HOST: process.env.REDIS_HOST,
+        REDIS_PORT: process.env.REDIS_PORT
+            ? Number(process.env.REDIS_PORT)
+            : undefined,
+        SMTP_HOST: process.env.SMTP_HOST,
+        SMTP_PORT: process.env.SMTP_PORT
+            ? Number(process.env.SMTP_PORT)
+            : undefined,
+        SMTP_USERNAME: process.env.SMTP_USERNAME,
+        SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+    };
+};
+
+const getSanitizedConfig = (config: ENV): Config => {
+    for (const [key, value] of Object.entries(config)) {
+        if (value === undefined) {
+            Logging.error(`Missing key ${key} in config.env`, "ENV");
+        }
+    }
+    return config as Config;
+};
+
+const config = getConfig();
+
+export const sanitizedConfig = getSanitizedConfig(config);
 
 export const port =
-    process.env.NODE_ENV === "production"
-        ? (process.env.PORT as unknown as number)
-        : 3001;
+    sanitizedConfig.NODE_ENV === "production" ? sanitizedConfig.PORT : 3001;
 
 export const mongodbConfig = {
     mongo: {
-        uri: MONGODB_URI,
+        uri: sanitizedConfig.MONGODB_URI.replace(
+            "<username>",
+            sanitizedConfig.MONGODB_USERNAME
+        )
+            .replace("<password>", sanitizedConfig.MONGODB_PASSWORD)
+            .replace("<database>", sanitizedConfig.MONGODB_DB_NAME),
         // Since Mongoose v.6 the url parser and unified index are used by default
         options: {},
     },
 };
 
 // REDIS session storage settings
-
-export const REDIS_HOST = process.env.REDIS_HOST as string;
-export const REDIS_PORT = process.env.REDIS_PORT as unknown as number;
-
 export const redisConfig: RedisClientOptions = {
     socket: {
-        host: REDIS_HOST,
-        port: REDIS_PORT,
+        host: sanitizedConfig.REDIS_HOST,
+        port: sanitizedConfig.REDIS_PORT,
     },
     legacyMode: true,
 };
@@ -47,10 +125,10 @@ export const rateLimiterOptions = {
 export const cookieOptions: CookieOptions = {
     // convert days into milliseconds
     expires: new Date(
-        (Date.now() + Number(process.env.COOKIE_EXPIRES)) * 24 * 60 * 60 * 1000
+        (Date.now() + sanitizedConfig.COOKIE_EXPIRES) * 24 * 60 * 60 * 1000
     ),
     // prevent client JS access to cookie data
     httpOnly: true,
     // TLS protection
-    secure: process.env.NODE_ENV === "production" ? true : false,
+    secure: sanitizedConfig.NODE_ENV === "production" ? true : false,
 };

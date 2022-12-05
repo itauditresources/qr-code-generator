@@ -1,22 +1,17 @@
 import express, { Request, Response, NextFunction } from "express";
-import session from "express-session";
+
 import helmet from "helmet";
 import rateLimiter from "rate-limiter-flexible";
 import path from "path";
 import dotenv from "dotenv";
 
 import error from "./controller/errorController";
+import session from "./middleware/setSession";
 import { APIError, HttpCode } from "./utils/APIError";
 import staffRouter from "./router/userRouter";
 import { Logging } from "./utils/Logging";
 import { setHeaders } from "./middleware/setSecureHeaders";
-import { redisClient, RedisStore } from "./database/redis";
-import {
-    cookieOptions,
-    rateLimiterOptions,
-    REDIS_HOST,
-    REDIS_PORT,
-} from "./config/config";
+import { rateLimiterOptions } from "./config/config";
 
 const app = express();
 
@@ -46,7 +41,7 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
         .then((rateLimiterRes) => {
             setHeaders(res, next, rateLimiterRes);
         })
-        .catch((rateLimiterRes) => {
+        .catch((_rateLimiterRes) => {
             next(
                 new APIError({
                     httpCode: HttpCode.BAD_GATEWAY,
@@ -57,16 +52,31 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
         });
 });
 
-app.use(
-    session({
-        secret: "my new secret",
-        store: new RedisStore({ client: redisClient }),
-        resave: false,
-        saveUninitialized: false,
-        name: "session",
-        cookie: cookieOptions,
-    })
-);
+app.use(session);
+
+// app.use(function (req, res, next) {
+//     let tries = 3;
+
+//     function lookupSession(error) {
+//         if (error) {
+//             return next(error);
+//         }
+
+//         tries -= 1;
+
+//         if (req.session !== undefined) {
+//             return next();
+//         }
+
+//         if (tries < 0) {
+//             return next(new Error("oh no"));
+//         }
+
+//         sessionMiddleware(req, res, lookupSession);
+//     }
+
+//     lookupSession();
+// });
 
 // set secure HTTP headers
 app.use(helmet());

@@ -9,6 +9,7 @@ import asyncWrapper from "../utils/asyncWrapper";
 import { APIError, HttpCode } from "../utils/APIError";
 import { createResponse } from "../utils/createResponse";
 import { TypedRequestBody } from "../library/typedRequest";
+import { redisClient } from "../database/redis";
 
 dotenv.config();
 
@@ -77,7 +78,7 @@ export const register = asyncWrapper(
         user.password = "";
         user.passwordConfirm = "";
 
-        //res.cookie("jwt", token, options);
+        await redisClient.set("JWT", token);
 
         res.status(HttpCode.CREATED).json(
             createResponse(true, [token, user], 1)

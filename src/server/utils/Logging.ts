@@ -35,33 +35,33 @@ export class Logging {
      * @param args data to print to stdout
      * @returns void
      */
-    public static info = (args: string) =>
+    public static info = (args: string, namespace = "INFO") =>
         console.log(
             `[TIME] ${print(
                 "green",
                 new Date().toLocaleString()
-            )} [INFO] ${print("green", args)}`
+            )} [${namespace}] ${print("green", args)}`
         );
-    public static log = (args: string) =>
+    public static log = (args: string, namespace = "INFO") =>
         console.log(
             `[TIME] ${print(
                 "white",
                 new Date().toLocaleString()
-            )} [INFO] ${print("white", args)}`
+            )} [${namespace}] ${print("white", args)}`
         );
-    public static error = (args: string) =>
+    public static error = (args: string, namespace = "INFO") =>
         console.log(
-            `[TIME] ${print("red", new Date().toLocaleString())} [INFO] ${print(
+            `[TIME] ${print(
                 "red",
-                args
-            )}`
+                new Date().toLocaleString()
+            )} [${namespace}] ${print("red", args)}`
         );
-    public static warn = (args: string) =>
+    public static warn = (args: string, namespace = "INFO") =>
         console.log(
             `[TIME] ${print(
                 "yellow",
                 new Date().toLocaleString()
-            )} [INFO] ${print("yellow", args)}`
+            )} [${namespace}] ${print("yellow", args)}`
         );
 }
 
