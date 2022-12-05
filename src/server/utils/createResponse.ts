@@ -5,7 +5,7 @@ export enum Body {
 
 export const createResponse = (
     success: boolean,
-    data?: any,
+    data?: unknown,
     n?: number,
     message?: string
 ) => {

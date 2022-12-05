@@ -9,7 +9,7 @@ import asyncWrapper from "../utils/asyncWrapper";
 import { APIError, HttpCode } from "../utils/APIError";
 import { createResponse } from "../utils/createResponse";
 import { TypedRequestBody } from "../library/typedRequest";
-import { redisClient } from "../database/redis";
+import redisClient from "../database/redis";
 
 dotenv.config();
 

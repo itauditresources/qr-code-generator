@@ -23,7 +23,10 @@ app.use(express.json());
 // logging
 if (process.env.NODE_ENV === "development") {
     app.use((req: Request, _res: Response, next: NextFunction) => {
-        Logging.log(`${req.method} - ${req.url} - ${req.rawHeaders.join()}`);
+        Logging.log(
+            `${req.method} - ${req.url} - ${Object.values(req.params).join()}`,
+            "SERVER"
+        );
 
         next();
     });

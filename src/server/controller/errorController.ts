@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
 Since we accept different types of errors which are not always 
 defined in their type declaration file we ignore the errors 

@@ -8,8 +8,10 @@ dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 // MONGODB driver settings
 interface ENV {
+    APP_NAME: string | undefined;
     NODE_ENV: string | undefined;
     PORT: number | undefined;
+    SESSION_SECRET: string | undefined;
     MONGODB_USERNAME: string | undefined;
     MONGODB_PASSWORD: string | undefined;
     MONGODB_DB_NAME: string | undefined;
@@ -28,8 +30,10 @@ interface ENV {
 }
 
 interface Config {
+    APP_NAME: string;
     NODE_ENV: string;
     PORT: number;
+    SESSION_SECRET: string;
     MONGODB_USERNAME: string;
     MONGODB_PASSWORD: string;
     MONGODB_DB_NAME: string;
@@ -49,8 +53,10 @@ interface Config {
 
 const getConfig = (): ENV => {
     return {
+        APP_NAME: process.env.APP_NAME,
         NODE_ENV: process.env.NODE_ENV,
         PORT: process.env.PORT ? Number(process.env.PORT) : undefined,
+        SESSION_SECRET: process.env.SESSION_SECRET,
         MONGODB_USERNAME: process.env.MONGODB_USERNAME,
         MONGODB_PASSWORD: process.env.MONGODB_PASSWORD,
         MONGODB_DB_NAME: process.env.MONGODB_DB_NAME,
@@ -123,9 +129,11 @@ export const rateLimiterOptions = {
 };
 
 export const cookieOptions: CookieOptions = {
-    // convert days into milliseconds
+    // expires in n days after creation
     expires: new Date(
-        (Date.now() + sanitizedConfig.COOKIE_EXPIRES) * 24 * 60 * 60 * 1000
+        new Date().setDate(
+            new Date().getDate() + sanitizedConfig.COOKIE_EXPIRES
+        )
     ),
     // prevent client JS access to cookie data
     httpOnly: true,
