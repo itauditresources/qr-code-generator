@@ -77,7 +77,7 @@ const handleJWTExpiredError = () =>
     });
 
 const devError = (err: any, res: Response) => {
-    Logging.error(`Error - ${String(err)}`);
+    Logging.error(String(err), "ERROR");
     res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
         error: err.name,
         message: err.message,
@@ -96,7 +96,7 @@ const prodError = (err: any, res: Response) => {
     // programming error - don't leak information about it
     else {
         // log the error
-        Logging.error(`Error - ${String(err)}`);
+        Logging.error(String(err), "ERROR");
 
         res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
             status: "error",

@@ -10,9 +10,9 @@ export const createResponse = (
     message?: string
 ) => {
     return {
-        success: success ? "success" : "fail",
-        results: n ? n : null,
-        message: message ? message : "",
+        status: success ? "success" : "fail",
+        results: n ? n : undefined,
+        message: message ? message : undefined,
         data,
     };
 };
