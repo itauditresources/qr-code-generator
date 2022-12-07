@@ -12,8 +12,8 @@ void (async () => {
     await redisClient.connect();
 })();
 
-redisClient.on("error", (err: any) => Logging.error(err, "REDIS"));
-
 redisClient.on("connect", () => Logging.info("Database connected", "REDIS"));
+
+redisClient.on("error", (err: any) => Logging.error(err, "REDIS"));
 
 export default redisClient;

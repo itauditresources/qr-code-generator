@@ -7,11 +7,12 @@ import dotenv from "dotenv";
 
 import error from "./controller/errorController";
 import session from "./middleware/setSession";
-import { APIError, HttpCode } from "./utils/APIError";
+import { APIError } from "./utils/APIError";
 import staffRouter from "./router/userRouter";
 import { Logging } from "./utils/Logging";
 import { setHeaders } from "./middleware/setSecureHeaders";
 import { rateLimiterOptions } from "./config/config";
+import { HttpCode } from "./library/httpStatusCodes";
 
 const app = express();
 

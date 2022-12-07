@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 
 import { User } from "../model/user/User";
 import asyncWrapper from "../utils/asyncWrapper";
-import { APIError, HttpCode } from "../utils/APIError";
+import { APIError } from "../utils/APIError";
 import { createResponse } from "../utils/createResponse";
+import { HttpCode } from "../library/httpStatusCodes";
 
 /*
 Factory controller for all models. Provides reusable functions.

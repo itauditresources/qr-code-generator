@@ -11,7 +11,8 @@ Might declare a types.d.ts file in production instead!
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Request, Response, NextFunction } from "express";
 
-import { APIError, HttpCode } from "../utils/APIError";
+import { HttpCode } from "../library/httpStatusCodes";
+import { APIError } from "../utils/APIError";
 import { Logging } from "../utils/Logging";
 
 const handleCastError = (err: any) => {

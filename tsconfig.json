@@ -6,9 +6,14 @@
         "strict": true,
         "module": "commonjs",
         "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-
-        "types": ["node"]
+        "forceConsistentCasingInFileNames": true
     },
-    "include": ["src/**/*", "./.eslintrc.cjs", "*", "*.cjs", "tests/*"]
+    "include": [
+        "src/**/*",
+        "./.eslintrc.cjs",
+        "*",
+        "*.cjs",
+        "src/server/tests/*",
+        "src/server/types/*.d.ts"
+    ]
 }

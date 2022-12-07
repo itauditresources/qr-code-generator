@@ -15,6 +15,7 @@ environment to reduce abstraction and a potential source of errors.
 */
 
 import validator from "validator";
+import bcrypt from "bcrypt";
 import { Schema, InferSchemaType, Model, model } from "mongoose";
 
 type Password = {
@@ -61,12 +62,13 @@ const userSchema = new Schema({
         ],
         validate: {
             validator: function (value: string): boolean {
-                // `this` is only defined on save and find
+                // `this` is only defined on save and find methods
                 // @ts-ignore
                 return value === this.password;
             },
             message: "Your passwords do not match",
         },
+        select: false,
     },
     name: {
         type: String,
@@ -104,6 +106,16 @@ const userSchema = new Schema({
 // Validation methods
 
 // Middleware functions
+userSchema.pre("save", async function (next) {
+    // Only run this function if password was actually modified
+    if (!this.isModified("password")) return next();
+
+    // Hash the password with cost of 12
+    this.password = await bcrypt.hash(this.password, 12);
+
+    // Delete passwordConfirm field
+    next();
+});
 
 // create instance methods which will run on the instance of a model
 

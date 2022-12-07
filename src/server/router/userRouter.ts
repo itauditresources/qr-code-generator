@@ -2,20 +2,40 @@ import { Router } from "express";
 
 import { login, register } from "../controller/authenticationController";
 import {
+    setID,
     getAllUsers,
     getUser,
+    updateMe,
+    deleteMe,
     updateUser,
     deleteUser,
+    createUser,
 } from "../controller/userController";
 
-const staffRouter = Router();
+const router = Router();
 
 // AUTHENTICATION ROUTES
-staffRouter.route("/login").post(login);
-staffRouter.route("/register").post(register);
+router.post("/register", register);
+router.post("/login", login);
+//router.get('/logout', logout);
+
+//router.post('/forgotPassword', authController.forgotPassword);
+//router.patch('/resetPassword/:token', authController.resetPassword);
 
 // USER ROUTES
-staffRouter.route("/").get(getAllUsers);
-staffRouter.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
+// Protect all routes after this middleware
+//router.use(authController.protect);
 
-export default staffRouter;
+//router.patch('/updateMyPassword', authController.updatePassword);
+router.get("/me", setID, getUser);
+router.patch("/update", updateMe);
+router.delete("/deleteMe", deleteMe);
+
+// ADMIN ROUTES
+//router.use(authController.restrictTo('admin'));
+
+router.route("/").get(getAllUsers).post(createUser);
+
+router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
+
+export default router;

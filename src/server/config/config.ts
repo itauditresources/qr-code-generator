@@ -3,54 +3,11 @@ import { CookieOptions } from "express-session";
 import path from "path";
 import { RedisClientOptions } from "redis";
 import { Logging } from "../utils/Logging";
+import { ENV, Config } from "../library/envVariables";
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 // MONGODB driver settings
-interface ENV {
-    APP_NAME: string | undefined;
-    NODE_ENV: string | undefined;
-    PORT: number | undefined;
-    SESSION_SECRET: string | undefined;
-    MONGODB_USERNAME: string | undefined;
-    MONGODB_PASSWORD: string | undefined;
-    MONGODB_DB_NAME: string | undefined;
-    MONGODB_URI: string | undefined;
-    SALT: string | undefined;
-    JWT_EXPIRES: number | undefined;
-    COOKIE_EXPIRES: number | undefined;
-    REDIS_USERNAME: string | undefined;
-    REDIS_PASSWORD: string | undefined;
-    REDIS_HOST: string | undefined;
-    REDIS_PORT: number | undefined;
-    SMTP_HOST: string | undefined;
-    SMTP_PORT: number | undefined;
-    SMTP_USERNAME: string | undefined;
-    SMTP_PASSWORD: string | undefined;
-}
-
-interface Config {
-    APP_NAME: string;
-    NODE_ENV: string;
-    PORT: number;
-    SESSION_SECRET: string;
-    MONGODB_USERNAME: string;
-    MONGODB_PASSWORD: string;
-    MONGODB_DB_NAME: string;
-    MONGODB_URI: string;
-    SALT: string;
-    JWT_EXPIRES: number;
-    COOKIE_EXPIRES: number;
-    REDIS_USERNAME: string;
-    REDIS_PASSWORD: string;
-    REDIS_HOST: string;
-    REDIS_PORT: number;
-    SMTP_HOST: string;
-    SMTP_PORT: number;
-    SMTP_USERNAME: string;
-    SMTP_PASSWORD: string;
-}
-
 const getConfig = (): ENV => {
     return {
         APP_NAME: process.env.APP_NAME,
@@ -118,6 +75,7 @@ export const redisConfig: RedisClientOptions = {
         host: sanitizedConfig.REDIS_HOST,
         port: sanitizedConfig.REDIS_PORT,
     },
+    // necessary since v.4
     legacyMode: true,
 };
 

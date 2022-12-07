@@ -6,6 +6,20 @@ import mongodb from "./database/mongodb";
 import { port } from "./config/config";
 import { Logging } from "./utils/Logging";
 
+declare module "express-session" {
+    interface SessionData {
+        token: string;
+    }
+}
+
+declare global {
+    namespace Express {
+        export interface Request {
+            id: string;
+        }
+    }
+}
+
 void (async () => {
     await mongodb;
 })();

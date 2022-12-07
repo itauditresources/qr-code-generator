@@ -2,25 +2,23 @@ import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 
-import dotenv from "dotenv";
-
 import { User } from "../model/user/User";
 import asyncWrapper from "../utils/asyncWrapper";
-import { APIError, HttpCode } from "../utils/APIError";
+import { APIError } from "../utils/APIError";
 import { createResponse } from "../utils/createResponse";
 import { TypedRequestBody } from "../library/typedRequest";
-import redisClient from "../database/redis";
-
-dotenv.config();
+import { HttpCode } from "../library/httpStatusCodes";
+import { sanitizedConfig } from "../config/config";
+import mongoose from "mongoose";
 
 const generateToken = (id: string) => {
     const jwt: Promise<string | undefined> = new Promise<string | undefined>(
         (resolve, reject) => {
             jsonwebtoken.sign(
                 { id },
-                process.env.SALT as string,
+                sanitizedConfig.SALT,
                 {
-                    expiresIn: process.env.JWT_EXPIRES as string,
+                    expiresIn: sanitizedConfig.JWT_EXPIRES,
                 },
                 (err, token) => {
                     if (err) reject(err);
@@ -41,18 +39,32 @@ export const login = asyncWrapper(
         const { email, password }: { email: string; password: string } =
             req.body;
 
-        const user = User.findOne({ email });
+        let encryptedPassword: string | undefined;
+        let userID: mongoose.Types.ObjectId | undefined;
 
-        const passwordEquals = await bcrypt.compare(password, "");
+        // find each document with the provided email address
+        // the email is a unique parameter in the User model
+        const user = await User.findOne({ email }).select("+password").exec();
 
-        if (!passwordEquals) {
+        if (user === null)
             return next(
                 new APIError({
                     httpCode: HttpCode.CONFLICT,
                     description: "Wrong email or password - Please try again",
                 })
             );
-        }
+
+        const passwordEquals = await bcrypt.compare(password, user.password);
+
+        if (!passwordEquals)
+            return next(
+                new APIError({
+                    httpCode: HttpCode.CONFLICT,
+                    description: "Wrong email or password - Please try again",
+                })
+            );
+
+        req.session.token = await generateToken(String(userID));
 
         res.status(HttpCode.OK).json(createResponse(true, "Successful login"));
     }
@@ -61,8 +73,6 @@ export const login = asyncWrapper(
 export const register = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
         const user = await User.create(req.body);
-
-        await user.save();
 
         const token = await generateToken(String(user._id));
 
@@ -77,8 +87,6 @@ export const register = asyncWrapper(
         // Remove the password from the output
         user.password = "";
         user.passwordConfirm = "";
-
-        await redisClient.set("JWT", token);
 
         res.status(HttpCode.CREATED).json(
             createResponse(true, [token, user], 1)
