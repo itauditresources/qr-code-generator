@@ -9,6 +9,8 @@ import { Logging } from "./utils/Logging";
 declare module "express-session" {
     interface SessionData {
         token: string;
+        userID: string;
+        role: string;
     }
 }
 

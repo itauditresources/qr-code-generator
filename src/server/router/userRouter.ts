@@ -1,6 +1,11 @@
 import { Router } from "express";
 
-import { login, register } from "../controller/authenticationController";
+import {
+    login,
+    register,
+    logout,
+    protect,
+} from "../controller/authenticationController";
 import {
     setID,
     getAllUsers,
@@ -17,7 +22,7 @@ const router = Router();
 // AUTHENTICATION ROUTES
 router.post("/register", register);
 router.post("/login", login);
-//router.get('/logout', logout);
+router.get("/logout", logout);
 
 //router.post('/forgotPassword', authController.forgotPassword);
 //router.patch('/resetPassword/:token', authController.resetPassword);

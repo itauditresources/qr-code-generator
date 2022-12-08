@@ -114,6 +114,8 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, 12);
 
     // Delete passwordConfirm field
+    // workaround: $unset the field during the initial save of the document
+    // inside the controller function
     next();
 });
 
