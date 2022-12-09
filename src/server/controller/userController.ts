@@ -18,7 +18,7 @@ const filterObj = (body: object, allowedFields: string[]) => {
 };
 
 export const setID = (req: Request, _res: Response, next: NextFunction) => {
-    req.params.id = String(req.session.userID);
+    req.params.id = req.id;
 
     next();
 };

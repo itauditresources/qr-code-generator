@@ -15,26 +15,26 @@ To initialize the yarn SDK for VS Code run: `yarn dlx @yarnpkg/sdks vscode`
 
 ## Dependencies
 
-1. [Express](https://www.npmjs.com/package/express)
-2. [Validator](https://www.npmjs.com/package/validator)
-3. [Dotenv](https://www.nmpjs.com/package/dotenv)
-4. [Bcrypt](https://www.nmpjs.com/package/bcrypt)
-5. [Jsonwebtoken](https://www.nmpjs.com/package/jsonwebtoken)
-6. [Mongoose](https://www.nmpjs.com/package/mongoose) Might be replaced by the native mongodb driver in production
+1. [express](https://www.npmjs.com/package/express)
+2. [validator](https://www.npmjs.com/package/validator)
+3. [dotenv](https://www.nmpjs.com/package/dotenv)
+4. [bcrypt](https://www.nmpjs.com/package/bcrypt)
+5. [jsonwebtoken](https://www.nmpjs.com/package/jsonwebtoken)
+6. [mongoose](https://www.nmpjs.com/package/mongoose) Might be replaced by the native mongodb driver in production
 7. [rate-limiter-flexible](https://www.nmpjs.com/package/rate-limiter-flexible)
-8. [Redis](https://www.nmpjs.com/package/redis)
+8. [redis](https://www.nmpjs.com/package/redis)
 9. [connect-redis](https://www.nmpjs.com/package/connect-redis)
-10. [nodemailer](https://www.nmpjs.com/package/nodemailer)
+10. [@sendgrid/mail](https://www.nmpjs.com/package/sendgrid/mail) During the development stage
 11. [helmet](https://www.nmpjs.com/package/helmet)
 12. [express-session](https://www.nmpjs.com/package/express-session)
 
 ## Dev Dependencies
 
 1. [Typescript](https://www.npmjs.com/package/typescript)
-2. [Nodemon](https://www.npmjs.com/package/nodemon)
-3. [Mocha](https://www.nmpjs.com/package/mocha)
-4. [TS-Node](https://www.nmpjs.com/package/ts-node)
-5. [Eslint](https://www.nmpjs.com/package/eslint)
+2. [nodemon](https://www.npmjs.com/package/nodemon)
+3. [mocha](https://www.nmpjs.com/package/mocha)
+4. [ts-Node](https://www.nmpjs.com/package/ts-node)
+5. [eslint](https://www.nmpjs.com/package/eslint)
 
 ## Environment
 

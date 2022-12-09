@@ -17,7 +17,7 @@ const generateToken = (id: string) => {
                 { id },
                 sanitizedConfig.SALT,
                 {
-                    expiresIn: sanitizedConfig.JWT_EXPIRES,
+                    expiresIn: sanitizedConfig.JWT_EXPIRES * 1000 * 60 * 24,
                 },
                 (err, token) => {
                     if (err) reject(err);
@@ -65,16 +65,19 @@ export const login = asyncWrapper(
             if (err) next(err);
         });
 
+        // Save token in session storage
         req.session.token = await generateToken(String(user._id));
-
-        req.session.userID = String(user._id);
 
         // Save session before redirecting to prevent empty session
         req.session.save((err) => {
             if (err) return next(err);
 
-            res.redirect("/");
+            // res.redirect("./");
         });
+
+        res.status(HttpCode.OK).json(
+            createResponse(true, undefined, undefined, "Logged in")
+        );
     }
 );
 
@@ -96,17 +99,24 @@ export const register = asyncWrapper(
         await user.updateOne({ $unset: { passwordConfirm: "" } }).exec();
 
         // Hide password field from the output
+        // undefined would hide the fields but typescript will complain
+        // about the type inconsistency
         user.password = "";
         user.passwordConfirm = "";
 
         res.status(HttpCode.CREATED).json(
-            createResponse(true, user, 1, "Signup successful - Please login")
+            createResponse(
+                true,
+                [token, user],
+                1,
+                "Signup successful - Please login"
+            )
         );
     }
 );
 
 export const protect = asyncWrapper(
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, _res: Response, next: NextFunction) => {
         let token: string | undefined;
         if (
             req.headers.authorization &&
@@ -126,9 +136,11 @@ export const protect = asyncWrapper(
             );
         }
 
-        const id = jsonwebtoken.verify(token, sanitizedConfig.SALT);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const jwt: any = jsonwebtoken.verify(token, sanitizedConfig.SALT);
 
-        const user = await User.findById(id);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const user = await User.findById(String(jwt.id));
 
         if (!user)
             return next(
@@ -138,10 +150,25 @@ export const protect = asyncWrapper(
                         "Your session seems to be invalid - Please log in again",
                 })
             );
+
+        if (user.changedAt! > new Date(jwt.iat)) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.UNAUTHORIZED,
+                    description:
+                        "Your password changed since your last login - Please log in again",
+                })
+            );
+        }
+
+        // Set id to identify the respective documents in the database
+        req.id = String(user._id);
+
+        next();
     }
 );
 
-export const logout = (req: Request, res: Response, next: NextFunction) => {
+export const logout = (req: Request, res: Response, _next: NextFunction) => {
     if (!req.session) res.redirect("login");
 
     req.session.destroy((err) => {

@@ -29,9 +29,7 @@ export const getOne = (Model: typeof User) =>
     asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
 
-        const document = await Model.findById({
-            _id: new mongoose.Types.ObjectId(id),
-        });
+        const document = await Model.findById(id);
 
         if (!document)
             return next(

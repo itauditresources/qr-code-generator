@@ -101,6 +101,7 @@ const userSchema = new Schema({
     picture: {
         type: Buffer,
     },
+    passwordChangedAt: Date,
 });
 
 // Validation methods
@@ -119,7 +120,16 @@ userSchema.pre("save", async function (next) {
     next();
 });
 
-// create instance methods which will run on the instance of a model
+userSchema.pre("save", function (next) {
+    if (!this.isModified("password") || this.isNew) return next();
+
+    // Set password change date - Offset the time a bit to cover the rare case that
+    // a user request and change their password within a second
+    this.passwordChangedAt = new Date(Date.now() - 1000);
+    next();
+});
+
+// Instance methods which will run on the instance of a model
 
 // Static MongoDB methods which are called on the respective model
 

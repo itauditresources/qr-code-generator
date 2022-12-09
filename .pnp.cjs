@@ -28,6 +28,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@sendgrid/mail", "npm:7.7.0"],\
             ["@types/bcrypt", "npm:5.0.0"],\
             ["@types/connect-redis", "npm:0.0.19"],\
             ["@types/express", "npm:4.17.14"],\
@@ -36,7 +37,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/mocha", "npm:10.0.0"],\
             ["@types/mongoose", "npm:5.11.97"],\
             ["@types/node", "npm:18.11.9"],\
-            ["@types/nodemailer", "npm:6.4.6"],\
             ["@types/validator", "npm:13.7.10"],\
             ["@typescript-eslint/eslint-plugin", "virtual:c7ea6a77b97e141fb5f56b52c044ce959d34892eede47f993537fe12c6475e1b655f13cc01b310e8b358fd3d12b9f57cbdc40a92b0d69957eb572b6686c71d1a#npm:5.44.0"],\
             ["@typescript-eslint/parser", "virtual:c7ea6a77b97e141fb5f56b52c044ce959d34892eede47f993537fe12c6475e1b655f13cc01b310e8b358fd3d12b9f57cbdc40a92b0d69957eb572b6686c71d1a#npm:5.44.0"],\
@@ -50,7 +50,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonwebtoken", "npm:8.5.1"],\
             ["mocha", "npm:10.1.0"],\
             ["mongoose", "npm:6.7.2"],\
-            ["nodemailer", "npm:6.8.0"],\
             ["nodemon", "npm:2.0.20"],\
             ["rate-limiter-flexible", "npm:2.4.1"],\
             ["redis", "npm:4.5.1"],\
@@ -1288,6 +1287,38 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@sendgrid/client", [\
+        ["npm:7.7.0", {\
+          "packageLocation": "./.yarn/cache/@sendgrid-client-npm-7.7.0-5f79fe887b-81299ff65b.zip/node_modules/@sendgrid/client/",\
+          "packageDependencies": [\
+            ["@sendgrid/client", "npm:7.7.0"],\
+            ["@sendgrid/helpers", "npm:7.7.0"],\
+            ["axios", "npm:0.26.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@sendgrid/helpers", [\
+        ["npm:7.7.0", {\
+          "packageLocation": "./.yarn/cache/@sendgrid-helpers-npm-7.7.0-6af68b3344-20387aae1b.zip/node_modules/@sendgrid/helpers/",\
+          "packageDependencies": [\
+            ["@sendgrid/helpers", "npm:7.7.0"],\
+            ["deepmerge", "npm:4.2.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@sendgrid/mail", [\
+        ["npm:7.7.0", {\
+          "packageLocation": "./.yarn/cache/@sendgrid-mail-npm-7.7.0-347c053cdb-8bd446c367.zip/node_modules/@sendgrid/mail/",\
+          "packageDependencies": [\
+            ["@sendgrid/mail", "npm:7.7.0"],\
+            ["@sendgrid/client", "npm:7.7.0"],\
+            ["@sendgrid/helpers", "npm:7.7.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@tootallnate/once", [\
         ["npm:2.0.0", {\
           "packageLocation": "./.yarn/cache/@tootallnate-once-npm-2.0.0-e36cf4f140-ad87447820.zip/node_modules/@tootallnate/once/",\
@@ -1473,16 +1504,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ["npm:18.11.9", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-18.11.9-d21dd6ec05-cc0aae109e.zip/node_modules/@types/node/",\
           "packageDependencies": [\
-            ["@types/node", "npm:18.11.9"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@types/nodemailer", [\
-        ["npm:6.4.6", {\
-          "packageLocation": "./.yarn/cache/@types-nodemailer-npm-6.4.6-fafdca37fd-c5ba1b83a2.zip/node_modules/@types/nodemailer/",\
-          "packageDependencies": [\
-            ["@types/nodemailer", "npm:6.4.6"],\
             ["@types/node", "npm:18.11.9"]\
           ],\
           "linkType": "HARD"\
@@ -1984,6 +2005,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["axios", [\
+        ["npm:0.26.1", {\
+          "packageLocation": "./.yarn/cache/axios-npm-0.26.1-a6641ce4e3-d9eb58ff4b.zip/node_modules/axios/",\
+          "packageDependencies": [\
+            ["axios", "npm:0.26.1"],\
+            ["follow-redirects", "virtual:a6641ce4e3bdcc0997f8f53d9481b67c5d38e21276de8eeee7bf92881685b3ad5600bae416c2af904ceab8132bac649e7efd0af93f18e158e0e65ee05a263d72#npm:1.15.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["balanced-match", [\
         ["npm:1.0.2", {\
           "packageLocation": "./.yarn/cache/balanced-match-npm-1.0.2-a53c126459-9706c088a2.zip/node_modules/balanced-match/",\
@@ -2465,6 +2496,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/deep-is-npm-0.1.4-88938b5a67-edb65dd0d7.zip/node_modules/deep-is/",\
           "packageDependencies": [\
             ["deep-is", "npm:0.1.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["deepmerge", [\
+        ["npm:4.2.2", {\
+          "packageLocation": "./.yarn/cache/deepmerge-npm-4.2.2-112165ced2-a8c43a1ed8.zip/node_modules/deepmerge/",\
+          "packageDependencies": [\
+            ["deepmerge", "npm:4.2.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -3021,6 +3061,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/flatted-npm-3.2.7-0da10b7c56-427633049d.zip/node_modules/flatted/",\
           "packageDependencies": [\
             ["flatted", "npm:3.2.7"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["follow-redirects", [\
+        ["npm:1.15.2", {\
+          "packageLocation": "./.yarn/cache/follow-redirects-npm-1.15.2-1ec1dd82be-faa66059b6.zip/node_modules/follow-redirects/",\
+          "packageDependencies": [\
+            ["follow-redirects", "npm:1.15.2"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a6641ce4e3bdcc0997f8f53d9481b67c5d38e21276de8eeee7bf92881685b3ad5600bae416c2af904ceab8132bac649e7efd0af93f18e158e0e65ee05a263d72#npm:1.15.2", {\
+          "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-1a488024d3/0/cache/follow-redirects-npm-1.15.2-1ec1dd82be-faa66059b6.zip/node_modules/follow-redirects/",\
+          "packageDependencies": [\
+            ["follow-redirects", "virtual:a6641ce4e3bdcc0997f8f53d9481b67c5d38e21276de8eeee7bf92881685b3ad5600bae416c2af904ceab8132bac649e7efd0af93f18e158e0e65ee05a263d72#npm:1.15.2"],\
+            ["@types/debug", null],\
+            ["debug", null]\
+          ],\
+          "packagePeers": [\
+            "@types/debug",\
+            "debug"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -4224,15 +4286,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["nodemailer", [\
-        ["npm:6.8.0", {\
-          "packageLocation": "./.yarn/cache/nodemailer-npm-6.8.0-8280b33fb7-e1827df714.zip/node_modules/nodemailer/",\
-          "packageDependencies": [\
-            ["nodemailer", "npm:6.8.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["nodemon", [\
         ["npm:2.0.20", {\
           "packageLocation": "./.yarn/unplugged/nodemon-npm-2.0.20-2fea8f7bf9/node_modules/nodemon/",\
@@ -5369,6 +5422,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["vcard-generator", "workspace:."],\
+            ["@sendgrid/mail", "npm:7.7.0"],\
             ["@types/bcrypt", "npm:5.0.0"],\
             ["@types/connect-redis", "npm:0.0.19"],\
             ["@types/express", "npm:4.17.14"],\
@@ -5377,7 +5431,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/mocha", "npm:10.0.0"],\
             ["@types/mongoose", "npm:5.11.97"],\
             ["@types/node", "npm:18.11.9"],\
-            ["@types/nodemailer", "npm:6.4.6"],\
             ["@types/validator", "npm:13.7.10"],\
             ["@typescript-eslint/eslint-plugin", "virtual:c7ea6a77b97e141fb5f56b52c044ce959d34892eede47f993537fe12c6475e1b655f13cc01b310e8b358fd3d12b9f57cbdc40a92b0d69957eb572b6686c71d1a#npm:5.44.0"],\
             ["@typescript-eslint/parser", "virtual:c7ea6a77b97e141fb5f56b52c044ce959d34892eede47f993537fe12c6475e1b655f13cc01b310e8b358fd3d12b9f57cbdc40a92b0d69957eb572b6686c71d1a#npm:5.44.0"],\
@@ -5391,7 +5444,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonwebtoken", "npm:8.5.1"],\
             ["mocha", "npm:10.1.0"],\
             ["mongoose", "npm:6.7.2"],\
-            ["nodemailer", "npm:6.8.0"],\
             ["nodemon", "npm:2.0.20"],\
             ["rate-limiter-flexible", "npm:2.4.1"],\
             ["redis", "npm:4.5.1"],\

@@ -24,6 +24,7 @@ export interface ENV {
     SMTP_PORT: number | undefined;
     SMTP_USERNAME: string | undefined;
     SMTP_PASSWORD: string | undefined;
+    API_KEY: string | undefined;
 }
 
 export interface Config {
@@ -46,4 +47,5 @@ export interface Config {
     SMTP_PORT: number;
     SMTP_USERNAME: string;
     SMTP_PASSWORD: string;
+    API_KEY: string;
 }

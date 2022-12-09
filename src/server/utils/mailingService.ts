@@ -1,31 +1,68 @@
-import nodeMailer from "nodemailer";
+import sendgrid from "@sendgrid/mail";
 
 import { sanitizedConfig } from "../config/config";
+import { Logging } from "./Logging";
+
+interface EmailBody {
+    to: string;
+    from: string;
+    subject: string;
+    text: string;
+    html: string;
+}
 
 export default class Email {
-    public readonly header!: string;
-    public readonly body!: string;
-    private _message: string;
-    private _title: string;
     private _to: string;
     private _from: string;
-    private _client: unknown;
+    private _subject: string;
+    public _message!: EmailBody;
+    private readonly _key: string = sanitizedConfig.API_KEY;
 
-    constructor(title: string, message: string, to: string, from: string) {
-        this._title = title;
-        this._message = message;
+    constructor(to: string, from: string) {
         this._to = to;
         this._from = from;
-
-        this._client = nodeMailer.createTransport({
-            host: sanitizedConfig.SMTP_HOST,
-            port: sanitizedConfig.SMTP_PORT,
-            auth: {
-                user: sanitizedConfig.SMTP_USERNAME,
-                pass: sanitizedConfig.SMTP_PASSWORD,
-            },
-        });
+        this._subject = "";
+        this.init();
+        this.messageConstructor();
     }
 
-    static main() {}
+    public set to(v: string) {
+        this._to = v;
+    }
+
+    public get to() {
+        return this._to;
+    }
+
+    public set from(v: string) {
+        this._to = v;
+    }
+
+    public get from() {
+        return this._from;
+    }
+
+    private init(): void {
+        sendgrid.setApiKey(this._key);
+    }
+
+    private messageConstructor(): void {
+        this._message = {
+            to: this.to,
+            from: this.from,
+            subject: this._subject,
+            text: "Hello",
+            html: "<p>World</p>",
+        };
+    }
+
+    public async passwordReset(): Promise<void> {
+        this._subject = "Password reset";
+
+        try {
+            await sendgrid.send(this._message);
+        } catch (err) {
+            Logging.error(String(err), "EMAIL");
+        }
+    }
 }

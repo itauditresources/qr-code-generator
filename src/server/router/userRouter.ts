@@ -29,7 +29,7 @@ router.get("/logout", logout);
 
 // USER ROUTES
 // Protect all routes after this middleware
-//router.use(authController.protect);
+router.use(protect);
 
 //router.patch('/updateMyPassword', authController.updatePassword);
 router.get("/me", setID, getUser);

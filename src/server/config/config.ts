@@ -37,6 +37,7 @@ const getConfig = (): ENV => {
             : undefined,
         SMTP_USERNAME: process.env.SMTP_USERNAME,
         SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+        API_KEY: process.env.API_KEY,
     };
 };
 
