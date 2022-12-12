@@ -3,7 +3,7 @@
 ![Lines of code](https://img.shields.io/tokei/lines/github/itauditresources/vcard-generator)
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/itauditresources/vcard-generator)
 
-This monorepo is build using NodeJS version 18.12 and yarn version 3.3.0.
+This backend repository is build using NodeJS version 18.12 and yarn version 3.3.0.
 
 ## Builds
 

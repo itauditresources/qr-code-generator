@@ -151,7 +151,8 @@ export const protect = asyncWrapper(
                 })
             );
 
-        if (user.changedAt! > new Date(jwt.iat)) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
+        if (user.passwordChangedAt > new Date(jwt.iat)) {
             return next(
                 new APIError({
                     httpCode: HttpCode.UNAUTHORIZED,
@@ -168,27 +169,39 @@ export const protect = asyncWrapper(
     }
 );
 
-export const logout = (req: Request, res: Response, _next: NextFunction) => {
-    if (!req.session) res.redirect("login");
+export const logout = (req: Request, res: Response, next: NextFunction) => {
+    if (!req.session.token) {
+        return next(
+            new APIError({
+                httpCode: HttpCode.CONFLICT,
+                description: "No session found - Please log in",
+            })
+        );
+    }
 
     req.session.destroy((err) => {
         if (err)
             res.status(HttpCode.INTERNAL_SERVER_ERROR).json(
                 createResponse(
                     true,
-                    [],
+                    undefined,
                     undefined,
                     "Unable to logout - Please try again later"
                 )
             );
 
         res.status(HttpCode.OK).json(
-            createResponse(true, [], undefined, "Logged out successfully")
+            createResponse(
+                true,
+                undefined,
+                undefined,
+                "Logged out successfully"
+            )
         );
     });
 };
 
 export const loggedIn = (req: Request, res: Response, next: NextFunction) => {
     if (req.session.token) next();
-    else next("route");
+    else next("login");
 };

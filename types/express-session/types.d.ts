@@ -2,9 +2,8 @@
 export {};
 
 declare module "express-session" {
-    export interface SessionData {
+    interface SessionData {
         token: string;
-        userID: string;
         role: string;
     }
 }

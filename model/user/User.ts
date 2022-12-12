@@ -101,7 +101,10 @@ const userSchema = new Schema({
     picture: {
         type: Buffer,
     },
-    passwordChangedAt: Date,
+    passwordChangedAt: {
+        type: Date,
+        default: Date.now(),
+    },
 });
 
 // Validation methods
@@ -123,7 +126,7 @@ userSchema.pre("save", async function (next) {
 userSchema.pre("save", function (next) {
     if (!this.isModified("password") || this.isNew) return next();
 
-    // Set password change date - Offset the time a bit to cover the rare case that
+    // Set password change date - Offset by one second to cover the rare case that
     // a user request and change their password within a second
     this.passwordChangedAt = new Date(Date.now() - 1000);
     next();
