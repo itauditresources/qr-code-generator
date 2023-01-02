@@ -3,7 +3,6 @@ import express, { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import rateLimiter from "rate-limiter-flexible";
 import path from "path";
-import dotenv from "dotenv";
 
 import error from "./controller/errorController";
 import session from "./middleware/setSession";
@@ -11,18 +10,16 @@ import { APIError } from "./utils/APIError";
 import staffRouter from "./router/userRouter";
 import { Logging } from "./utils/Logging";
 import { setHeaders } from "./middleware/setSecureHeaders";
-import { rateLimiterOptions } from "./config/config";
+import { rateLimiterOptions, sanitizedConfig } from "./config/config";
 import { HttpCode } from "./library/httpStatusCodes";
 
 const app = express();
-
-dotenv.config();
 
 // MIDDLEWARE
 app.use(express.json());
 
 // logging
-if (process.env.NODE_ENV === "development") {
+if (sanitizedConfig.NODE_ENV === "development") {
     app.use((req: Request, _res: Response, next: NextFunction) => {
         Logging.log(
             `${req.method} - ${req.url} - ${Object.values(req.params).join()}`,

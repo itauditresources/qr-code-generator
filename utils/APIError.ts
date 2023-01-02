@@ -13,7 +13,8 @@ export class APIError extends Error {
     public readonly isOperational: boolean = true;
 
     /**
-     * Custom error class with the http status code
+     * Custom error class for the vcard generator application API
+     * @param args ErrorArgs
      */
     constructor(args: ErrorArgs) {
         super(args.description);

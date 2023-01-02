@@ -1,9 +1,10 @@
 # VCard Generator
 
 ![Lines of code](https://img.shields.io/tokei/lines/github/itauditresources/vcard-generator)
+![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/itauditresources/vcard-generator-backend)
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/itauditresources/vcard-generator)
 
-This backend repository is build using NodeJS version 18.12 and yarn version 3.3.0.
+This backend repository is build using NodeJS version 18.12 and yarn version 3.3.1
 
 ## Builds
 
