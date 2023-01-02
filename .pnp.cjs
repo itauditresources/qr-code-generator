@@ -33,7 +33,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/connect-redis", "npm:0.0.19"],\
             ["@types/express", "npm:4.17.14"],\
             ["@types/express-session", "npm:1.17.5"],\
-            ["@types/jsonwebtoken", "npm:8.5.9"],\
+            ["@types/jsonwebtoken", "npm:9.0.0"],\
             ["@types/mocha", "npm:10.0.0"],\
             ["@types/mongoose", "npm:5.11.97"],\
             ["@types/node", "npm:18.11.9"],\
@@ -1463,10 +1463,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/jsonwebtoken", [\
-        ["npm:8.5.9", {\
-          "packageLocation": "./.yarn/cache/@types-jsonwebtoken-npm-8.5.9-79c2843a81-33815ab02d.zip/node_modules/@types/jsonwebtoken/",\
+        ["npm:9.0.0", {\
+          "packageLocation": "./.yarn/cache/@types-jsonwebtoken-npm-9.0.0-d5bbcb5af8-c7791354ba.zip/node_modules/@types/jsonwebtoken/",\
           "packageDependencies": [\
-            ["@types/jsonwebtoken", "npm:8.5.9"],\
+            ["@types/jsonwebtoken", "npm:9.0.0"],\
             ["@types/node", "npm:18.11.9"]\
           ],\
           "linkType": "HARD"\
@@ -5367,7 +5367,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/connect-redis", "npm:0.0.19"],\
             ["@types/express", "npm:4.17.14"],\
             ["@types/express-session", "npm:1.17.5"],\
-            ["@types/jsonwebtoken", "npm:8.5.9"],\
+            ["@types/jsonwebtoken", "npm:9.0.0"],\
             ["@types/mocha", "npm:10.0.0"],\
             ["@types/mongoose", "npm:5.11.97"],\
             ["@types/node", "npm:18.11.9"],\

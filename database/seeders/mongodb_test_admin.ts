@@ -5,12 +5,19 @@
  */
 
 import { User } from "../../model/user/User";
+import { Logging } from "../../utils/Logging";
 
-void (async () => {
-    await User.create({
-        email: "admin@test.com",
-        password: "123",
-        passwordConfirm: "123",
-        role: "admin",
-    });
-})();
+export const initializeSeeders = async () => {
+    try {
+        await User.create({
+            email: "admin@test.com",
+            password: "123",
+            passwordConfirm: "123",
+            role: "admin",
+        });
+
+        Logging.info("Added administrator", "MONGODB");
+    } catch (err) {
+        Logging.error(`Failed to add administrator: ${String(err)}`, "MONGODB");
+    }
+};
