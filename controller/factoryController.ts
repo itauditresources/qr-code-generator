@@ -1,7 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import mongoose from "mongoose";
 
-import { User } from "../model/user/User";
 import asyncWrapper from "../utils/asyncWrapper";
 import { APIError } from "../utils/APIError";
 import { createResponse } from "../utils/createResponse";
@@ -16,7 +15,7 @@ Hiding __v is going to prevent Mongoose from being able to find the model instan
 (and update its __v) on a save unless you explicitly include those fields in the find method
 */
 
-export const getAll = (Model: typeof User) =>
+export const getAll = (Model: typeof mongoose.Model) =>
     asyncWrapper(async (_req: Response, res: Response, _next: NextFunction) => {
         const documents = await Model.find();
 
@@ -25,7 +24,7 @@ export const getAll = (Model: typeof User) =>
         );
     });
 
-export const getOne = (Model: typeof User) =>
+export const getOne = (Model: typeof mongoose.Model) =>
     asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
 
@@ -42,7 +41,7 @@ export const getOne = (Model: typeof User) =>
         res.status(HttpCode.OK).json(createResponse(true, document, 1));
     });
 
-export const updateOne = (Model: typeof User) =>
+export const updateOne = (Model: typeof mongoose.Model) =>
     asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
 
@@ -67,7 +66,7 @@ export const updateOne = (Model: typeof User) =>
         res.status(HttpCode.OK).json(createResponse(true, document, 1));
     });
 
-export const deleteOne = (Model: typeof User) =>
+export const deleteOne = (Model: typeof mongoose.Model) =>
     asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
 
@@ -79,7 +78,7 @@ export const deleteOne = (Model: typeof User) =>
             return next(
                 new APIError({
                     httpCode: HttpCode.NOT_FOUND,
-                    description: `User with id: ${id} not found`,
+                    description: `Document with id: ${id} not found`,
                 })
             );
 

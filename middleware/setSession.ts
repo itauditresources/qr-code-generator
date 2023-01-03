@@ -8,10 +8,10 @@ import { cookieOptions, sanitizedConfig } from "../config/config";
 const RedisStore = connectRedis(session);
 
 /*
-session initialization with redis as storage for session data
-
-feed environment data from a file to prevent disclosure 
-*/
+ * session initialization with redis as storage for session data
+ *
+ * feed environment data from a file to prevent disclosure
+ */
 export default session({
     secret: sanitizedConfig.SESSION_SECRET,
     store: new RedisStore({ client: redisClient }),

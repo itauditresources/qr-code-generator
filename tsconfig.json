@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "sourceMap": true,
-        "allowJs": false,
+        "sourceMap": false,
+        "allowJs": true,
         "target": "ES2015",
         "strict": true,
         "module": "commonjs",

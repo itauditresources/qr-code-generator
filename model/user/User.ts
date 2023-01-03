@@ -120,12 +120,13 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.pre("save", function (next) {
-    if (!this.isModified("password") || this.isNew) return next();
-
-    // Set password change date - Offset by one second to cover the rare case that
-    // a user request and change their password within a second
-    this.passwordChangedAt = new Date(Date.now() - 1000);
-    next();
+    if (this.isModified("password") || !this.isNew) {
+        // Set password change date - Offset by one second to cover the rare case that
+        // a user request and change their password within a second
+        this.passwordChangedAt = new Date(Date.now() - 1000);
+        next();
+    }
+    return next();
 });
 
 // Instance methods which will run on the instance of a model

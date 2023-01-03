@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
-import jsonwebtoken from "jsonwebtoken";
+import * as jose from "jose";
 
 import { User } from "../model/user/User";
 import asyncWrapper from "../utils/asyncWrapper";
@@ -10,23 +10,17 @@ import { TypedRequestBody } from "../library/typedRequest";
 import { HttpCode } from "../library/httpStatusCodes";
 import { sanitizedConfig } from "../config/config";
 
-const generateToken = (id: string) => {
-    const jwt: Promise<string | undefined> = new Promise<string | undefined>(
-        (resolve, reject) => {
-            jsonwebtoken.sign(
-                { id },
-                sanitizedConfig.SALT,
-                {
-                    expiresIn: sanitizedConfig.JWT_EXPIRES * 1000 * 60 * 24,
-                },
-                (err, token) => {
-                    if (err) reject(err);
-                    else resolve(token);
-                }
-            );
-        }
-    );
-    return jwt;
+const generateToken = async (id: string) => {
+    const secret = new TextEncoder().encode(id);
+    const alg = "HS265";
+
+    const token = await new jose.SignJWT({ id })
+        .setProtectedHeader({ alg })
+        .setIssuer("tlex")
+        .setExpirationTime(sanitizedConfig.JWT_EXPIRES * 1000 * 60 * 24)
+        .sign(secret);
+
+    return token;
 };
 
 export const login = asyncWrapper(
@@ -72,7 +66,7 @@ export const login = asyncWrapper(
         req.session.save((err) => {
             if (err) return next(err);
 
-            // res.redirect("./");
+            // res.redirect("/");
         });
 
         res.status(HttpCode.OK).json(
@@ -136,11 +130,12 @@ export const protect = asyncWrapper(
             );
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const jwt: any = jsonwebtoken.verify(token, sanitizedConfig.SALT);
+        const secret = new TextEncoder().encode();
+
+        const jwt = await jose.jwtVerify(token, secret);
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        const user = await User.findById(String(jwt.id));
+        const user = await User.findById(String(jwt.payload));
 
         if (!user)
             return next(
@@ -150,9 +145,16 @@ export const protect = asyncWrapper(
                         "Your session seems to be invalid - Please log in again",
                 })
             );
+        console.log(
+            user.passwordChangedAt,
+            jwt.payload.iat !== undefined ? new Date(jwt.payload.iat) : 0
+        );
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-        if (user.passwordChangedAt > new Date(jwt.iat)) {
+        if (
+            user.passwordChangedAt >
+            (jwt.payload.iat !== undefined ? new Date(jwt.payload.iat) : 0)
+        ) {
             return next(
                 new APIError({
                     httpCode: HttpCode.UNAUTHORIZED,
@@ -201,7 +203,7 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-export const loggedIn = (req: Request, res: Response, next: NextFunction) => {
+export const loggedIn = (req: Request, _res: Response, next: NextFunction) => {
     if (req.session.token) next();
     else next("login");
 };

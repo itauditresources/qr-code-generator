@@ -7,7 +7,8 @@ import path from "path";
 import error from "./controller/errorController";
 import session from "./middleware/setSession";
 import { APIError } from "./utils/APIError";
-import staffRouter from "./router/userRouter";
+import userRouter from "./router/userRouter";
+import vcardRouter from "./router/vcardRouter";
 import { Logging } from "./utils/Logging";
 import { setHeaders } from "./middleware/setSecureHeaders";
 import { rateLimiterOptions, sanitizedConfig } from "./config/config";
@@ -42,6 +43,7 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
         .then((rateLimiterRes) => {
             setHeaders(res, next, rateLimiterRes);
         })
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .catch((_rateLimiterRes) => {
             next(
                 new APIError({
@@ -87,7 +89,8 @@ app.use(helmet());
 app.disable("x-powered-by");
 
 // ROUTERS
-app.use("/api/v1/users", staffRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/cards", vcardRouter);
 
 // Serving static files
 app.use(express.static(path.join(__dirname, "/view")));

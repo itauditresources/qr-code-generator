@@ -6,50 +6,57 @@ import assert from "assert/strict";
 import { describe, it } from "mocha";
 
 import { sanitizedConfig } from "../config/config";
-import jsonwebtoken from "jsonwebtoken";
+import * as jose from "jose";
+
+let tokenStore: Promise<string>;
 
 describe("Authentication controller", function () {
     it("generate token function should always create the same token for the same UID", function () {
         const id = "47hfhdfhfgj567";
 
-        const jwt: Promise<string | undefined> = new Promise<
-            string | undefined
-        >((resolve, reject) => {
-            jsonwebtoken.sign(
-                { id },
-                sanitizedConfig.SALT,
-                {
-                    expiresIn: sanitizedConfig.JWT_EXPIRES * 1000 * 60 * 24,
-                },
-                (err, token) => {
-                    if (err) reject(err);
-                    else resolve(token);
-                }
-            );
-        });
+        const generateToken = async (id: string) => {
+            const alg = "HS256";
+            const secret = new TextEncoder().encode(sanitizedConfig.SALT);
 
-        assert.doesNotReject(jwt);
+            const token = await new jose.SignJWT({ "urn:example:claim": true })
+                .setProtectedHeader({ alg })
+                .setIssuer("tlex")
+                .setIssuedAt(Date.now())
+                .setExpirationTime("2h")
+                .setJti(id)
+                .sign(secret);
+
+            return token;
+        };
+
+        const token = generateToken(id);
+
+        tokenStore = token;
+
+        assert.doesNotReject(token);
     });
 
-    it("generated token should be verifiable using the SALT string and contain the UID", function () {
-        const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ3aGZoZGZoZmdqNTY3IiwiaWF0IjoxNjcwODQzMzk5LCJleHAiOjE3MTQwNDMzOTl9.eONzf3tXLUqU5PKx5w8uw3k-740L5sSkVSdICLpHVYk";
+    it("generated token should be verifiable using the SALT string and contain the UID", async function () {
+        const token = await tokenStore;
         const id = "47hfhdfhfgj567";
-        const jwt: any = jsonwebtoken.verify(token, sanitizedConfig.SALT);
+        const secret = new TextEncoder().encode(sanitizedConfig.SALT);
 
-        assert.deepEqual(jwt.id, id);
+        const jwt = await jose.jwtVerify(token, secret);
+
+        assert.deepEqual(jwt.payload.jti, id);
     });
 
-    it("generated token should be verifiable using the SALT string and contain the expiry date", function () {
-        const token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ3aGZoZGZoZmdqNTY3IiwiaWF0IjoxNjcwODQzMzk5LCJleHAiOjE3MTQwNDMzOTl9.eONzf3tXLUqU5PKx5w8uw3k-740L5sSkVSdICLpHVYk";
+    it("generated token should be verifiable using the SALT string and contain the expiry date", async function () {
+        const token = await tokenStore;
+        const secret = new TextEncoder().encode(sanitizedConfig.SALT);
         // Exact matching is not possible
-        // Token should at least last 29 days
-        const iat = (sanitizedConfig.JWT_EXPIRES - 1) * 1000 * 60 * 24;
-        const jwt: any = jsonwebtoken.verify(token, sanitizedConfig.SALT);
+        const iat = Date.now() + 1000 * 60 * 60 * 2; // add 2 hours
 
-        assert.equal(new Date(jwt.iat), new Date(iat));
+        const jwt = await jose.jwtVerify(token, secret);
+
+        assert.equal(
+            jwt.payload.iat !== undefined ? new Date(jwt.payload.iat) : 0,
+            new Date(iat)
+        );
     });
-
-    it("login function saves the UID in the request object", function () {});
 });

@@ -15,6 +15,7 @@
  */
 
 import { Schema, InferSchemaType, Model, model } from "mongoose";
+import validator from "validator";
 
 // MongoDB user schema
 // Define all user properties
@@ -33,6 +34,12 @@ const vcardSchema = new Schema({
     email: {
         type: String,
         required: [true, "Please provide your business email"],
+        validator: {
+            validate: function (value: string) {
+                return validator.isEmail(value);
+            },
+            message: "This email address is invalid",
+        },
     },
 
     telephone: Number,
@@ -62,4 +69,4 @@ export type IVCardDocument = Model<IVCard>;
 
 // Put everything together in a MongoDB model
 
-export const User = model<IVCard>("VCard", vcardSchema);
+export const VCard = model<IVCard>("VCard", vcardSchema);

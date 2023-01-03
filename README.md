@@ -20,7 +20,7 @@ To initialize the yarn SDK for VS Code run: `yarn dlx @yarnpkg/sdks vscode`
 2. [validator](https://www.npmjs.com/package/validator)
 3. [dotenv](https://www.nmpjs.com/package/dotenv)
 4. [bcrypt](https://www.nmpjs.com/package/bcrypt)
-5. [jsonwebtoken](https://www.nmpjs.com/package/jsonwebtoken)
+5. [jose](https://www.nmpjs.com/package/jose) Since _jsonwebtoken_ doesn't offer native typescript support
 6. [mongoose](https://www.nmpjs.com/package/mongoose) Might be replaced by the native mongodb driver in production
 7. [rate-limiter-flexible](https://www.nmpjs.com/package/rate-limiter-flexible)
 8. [redis](https://www.nmpjs.com/package/redis)
@@ -31,10 +31,10 @@ To initialize the yarn SDK for VS Code run: `yarn dlx @yarnpkg/sdks vscode`
 
 ## Dev Dependencies
 
-1. [Typescript](https://www.npmjs.com/package/typescript)
+1. [typescript](https://www.npmjs.com/package/typescript)
 2. [nodemon](https://www.npmjs.com/package/nodemon)
 3. [mocha](https://www.nmpjs.com/package/mocha)
-4. [ts-Node](https://www.nmpjs.com/package/ts-node)
+4. [ts-node](https://www.nmpjs.com/package/ts-node)
 5. [eslint](https://www.nmpjs.com/package/eslint)
 
 ## Environment
