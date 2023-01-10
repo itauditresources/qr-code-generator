@@ -18,7 +18,9 @@ const getConfig = (): ENV => {
         MONGODB_PASSWORD: process.env.MONGODB_PASSWORD,
         MONGODB_DB_NAME: process.env.MONGODB_DB_NAME,
         MONGODB_URI: process.env.MONGODB_URI,
-        SALT: process.env.SALT,
+        JWT_SALT: process.env.JWT_SALT,
+        JWT_ALGORITHM: process.env.JWT_ALGORITHM,
+        JWT_ISSUER: process.env.JWT_ISSUER,
         JWT_EXPIRES: process.env.JWT_EXPIRES
             ? Number(process.env.JWT_EXPIRES)
             : undefined,

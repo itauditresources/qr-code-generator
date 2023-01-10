@@ -10,14 +10,23 @@ import { TypedRequestBody } from "../library/typedRequest";
 import { HttpCode } from "../library/httpStatusCodes";
 import { sanitizedConfig } from "../config/config";
 
+/**
+ * Create a JWT. Uses the provided config information
+ * @param id UUID
+ * @returns JWT
+ */
 const generateToken = async (id: string) => {
-    const secret = new TextEncoder().encode(id);
-    const alg = "HS265";
+    // encode the SALT string as Uint8Array. File format is much safer
+    // to store secrets used by encryption algorithms
+    const secret = new TextEncoder().encode(sanitizedConfig.JWT_SALT);
+    const alg = sanitizedConfig.JWT_ALGORITHM;
 
-    const token = await new jose.SignJWT({ id })
+    const token = await new jose.SignJWT({ "urn:example:claim": true })
         .setProtectedHeader({ alg })
-        .setIssuer("tlex")
-        .setExpirationTime(sanitizedConfig.JWT_EXPIRES * 1000 * 60 * 24)
+        .setIssuer(sanitizedConfig.JWT_ISSUER)
+        .setIssuedAt(Date.now())
+        .setExpirationTime(sanitizedConfig.JWT_EXPIRES)
+        .setJti(id)
         .sign(secret);
 
     return token;
@@ -34,6 +43,7 @@ export const login = asyncWrapper(
 
         // find each document with the provided email address
         // the email is a unique parameter in the User model
+        // include the password to verify the user input
         const user = await User.findOne({ email }).select("+password").exec();
 
         if (user === null)
@@ -130,12 +140,11 @@ export const protect = asyncWrapper(
             );
         }
 
-        const secret = new TextEncoder().encode();
+        const secret = new TextEncoder().encode(sanitizedConfig.JWT_SALT);
 
         const jwt = await jose.jwtVerify(token, secret);
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        const user = await User.findById(String(jwt.payload));
+        const user = await User.findById(String(jwt.payload.jti));
 
         if (!user)
             return next(
@@ -145,15 +154,10 @@ export const protect = asyncWrapper(
                         "Your session seems to be invalid - Please log in again",
                 })
             );
-        console.log(
-            user.passwordChangedAt,
-            jwt.payload.iat !== undefined ? new Date(jwt.payload.iat) : 0
-        );
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
         if (
             user.passwordChangedAt >
-            (jwt.payload.iat !== undefined ? new Date(jwt.payload.iat) : 0)
+            (jwt.payload.iat !== undefined ? new Date(jwt.payload.iat) : false)
         ) {
             return next(
                 new APIError({

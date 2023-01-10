@@ -13,7 +13,9 @@ export interface ENV {
     MONGODB_PASSWORD: string | undefined;
     MONGODB_DB_NAME: string | undefined;
     MONGODB_URI: string | undefined;
-    SALT: string | undefined;
+    JWT_SALT: string | undefined;
+    JWT_ISSUER: string | undefined;
+    JWT_ALGORITHM: string | undefined;
     JWT_EXPIRES: number | undefined;
     COOKIE_EXPIRES: number | undefined;
     REDIS_USERNAME: string | undefined;
@@ -36,7 +38,9 @@ export interface Config {
     MONGODB_PASSWORD: string;
     MONGODB_DB_NAME: string;
     MONGODB_URI: string;
-    SALT: string;
+    JWT_SALT: string;
+    JWT_ISSUER: string;
+    JWT_ALGORITHM: string;
     JWT_EXPIRES: number;
     COOKIE_EXPIRES: number;
     REDIS_USERNAME: string;
