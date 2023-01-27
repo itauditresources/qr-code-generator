@@ -7,7 +7,7 @@ import { ENV, Config } from "../library/envVariables";
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
-// MONGODB driver settings
+// get all environment variables
 const getConfig = (): ENV => {
     return {
         APP_NAME: process.env.APP_NAME,
@@ -43,6 +43,7 @@ const getConfig = (): ENV => {
     };
 };
 
+// check for missing environment variables
 const getSanitizedConfig = (config: ENV): Config => {
     for (const [key, value] of Object.entries(config)) {
         if (value === undefined) {
@@ -54,11 +55,13 @@ const getSanitizedConfig = (config: ENV): Config => {
 
 const config = getConfig();
 
+// environment variables without missing variables
 export const sanitizedConfig = getSanitizedConfig(config);
 
 export const port =
     sanitizedConfig.NODE_ENV === "production" ? sanitizedConfig.PORT : 3001;
 
+// mongodb configuration variables
 export const mongodbConfig = {
     mongo: {
         uri: sanitizedConfig.MONGODB_URI.replace(
