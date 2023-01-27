@@ -3,7 +3,7 @@
 ![Lines of code](https://img.shields.io/tokei/lines/github/itauditresources/vcard-generator)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/itauditresources/vcard-generator-backend)
 [![Dependency Review](https://github.com/itauditresources/vcard-generator-backend/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/itauditresources/vcard-generator-backend/actions/workflows/dependency-review.yml)
-![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/itauditresources/vcard-generator)
+[![CodeQL](https://github.com/itauditresources/vcard-generator-backend/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/itauditresources/vcard-generator-backend/actions/workflows/github-code-scanning/codeql)
 
 This backend repository is build using NodeJS version 18.12 and yarn version 3.3.1
 
