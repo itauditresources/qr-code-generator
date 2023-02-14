@@ -4457,9 +4457,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vcard-generator@workspace:.":
+"vcard-generator-backend@workspace:.":
   version: 0.0.0-use.local
-  resolution: "vcard-generator@workspace:."
+  resolution: "vcard-generator-backend@workspace:."
   dependencies:
     "@sendgrid/mail": ^7.7.0
     "@types/bcrypt": ^5.0.0
