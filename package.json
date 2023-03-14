@@ -41,7 +41,7 @@
         "jose": "^4.11.2",
         "mongoose": "^6.7.2",
         "rate-limiter-flexible": "^2.4.1",
-        "redis": "^4.5.1",
+        "redis": "^4.6.4",
         "validator": "^13.7.0"
     }
 }
