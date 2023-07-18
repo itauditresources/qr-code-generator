@@ -39,7 +39,7 @@
         "express-session": "^1.17.3",
         "helmet": "^6.0.0",
         "jose": "^4.11.2",
-        "mongoose": "^6.7.2",
+        "mongoose": "^6.11.3",
         "rate-limiter-flexible": "^2.4.1",
         "redis": "^4.5.1",
         "validator": "^13.7.0"
