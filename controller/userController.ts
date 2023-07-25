@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
+import { ObjectId } from "mongodb";
 
+import db from "../database/mongodb";
 import { HttpCode } from "../library/httpStatusCodes";
 import { TypedRequestBody } from "../library/typedRequest";
-import { User } from "../model/user/User";
 import { APIError } from "../utils/APIError";
 import asyncWrapper from "../utils/asyncWrapper";
 import { createResponse } from "../utils/createResponse";
@@ -45,10 +46,11 @@ export const updateMe = asyncWrapper(
         const filteredBody = filterObj(req.body, ["name", "email"]);
 
         // 3) Update user document
-        const updatedUser = await User.findByIdAndUpdate(filteredBody, {
-            new: true,
-            runValidators: true,
-        });
+        const updatedUser = await (await db())
+            .collection("user")
+            .findOneAndUpdate({ _id: new ObjectId(req.id) }, filteredBody, {
+                maxTimeMS: 1000,
+            });
 
         res.status(HttpCode.OK).json(createResponse(true, updatedUser));
     }
@@ -56,7 +58,9 @@ export const updateMe = asyncWrapper(
 
 export const deleteMe = asyncWrapper(
     async (req: Request, res: Response, _next: NextFunction) => {
-        await User.findByIdAndUpdate(req.id, { active: false });
+        await (await db()).collection("user").findOneAndDelete({
+            _id: new ObjectId(req.id),
+        });
 
         res.status(HttpCode.NO_CONTENT).json(createResponse(true));
     }
@@ -73,9 +77,9 @@ export const createUser = (_req: Request, res: Response) => {
 
 // Factory functions for admins
 
-export const getUser = getOne(User);
-export const getAllUsers = getAll(User);
+export const getUser = getOne("users");
+export const getAllUsers = getAll("users");
 
 // Do not update passwords with this!
-export const updateUser = updateOne(User);
-export const deleteUser = deleteOne(User);
+export const updateUser = updateOne("users");
+export const deleteUser = deleteOne("users");

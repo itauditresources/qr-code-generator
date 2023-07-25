@@ -1,7 +1,7 @@
 {
     "name": "vcard-generator-backend",
     "description": "API for the vcard-generator application",
-    "packageManager": "yarn@3.3.1",
+    "packageManager": "yarn@3.6.1",
     "engines": {
         "node": "18.12"
     },
@@ -39,7 +39,7 @@
         "express-session": "^1.17.3",
         "helmet": "^6.0.0",
         "jose": "^4.11.2",
-        "mongoose": "^6.7.2",
+        "mongodb": "^5.2.0",
         "rate-limiter-flexible": "^2.4.1",
         "redis": "^4.5.1",
         "validator": "^13.7.0"

@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 import { CookieOptions } from "express-session";
 import path from "path";
 import { RedisClientOptions } from "redis";
+import { MongoClientOptions, ServerApiVersion } from "mongodb";
+
 import { Logging } from "../utils/Logging";
 import { ENV, Config } from "../library/envVariables";
 
@@ -70,8 +72,16 @@ export const mongodbConfig = {
         )
             .replace("<password>", sanitizedConfig.MONGODB_PASSWORD)
             .replace("<database>", sanitizedConfig.MONGODB_DB_NAME),
-        // Since Mongoose v.6 the url parser and unified index are used by default
-        options: {},
+        // declare options for the mongodb client.
+        // Use the current version of the driver
+        // See https://mongodb.github.io/node-mongodb-native/5.2/interfaces/MongoClientOptions.html
+        options: <MongoClientOptions>{
+            serverApi: {
+                version: ServerApiVersion.v1, // Use the current version of the driver
+                strict: true,
+                deprecationErrors: true,
+            },
+        },
     },
 };
 

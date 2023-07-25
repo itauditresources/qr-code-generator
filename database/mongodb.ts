@@ -1,16 +1,30 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
 
 import { Logging } from "../utils/Logging";
 import { mongodbConfig } from "../config/config";
 
-export default mongoose
-    .connect(mongodbConfig.mongo.uri, mongodbConfig.mongo.options)
-    .then((connection) =>
+const client = new MongoClient(
+    mongodbConfig.mongo.uri,
+    mongodbConfig.mongo.options
+);
+
+export default async () => {
+    try {
+        await client.connect();
+
+        await client.db().command({ ping: 1 });
+
         Logging.info(
-            `Database connected on port: ${connection.connection.port}`,
+            `Connected to database: ${String(client.db().databaseName)}`,
             "MONGODB"
-        )
-    )
-    .catch((err: any) => Logging.error(err, "MONGODB"));
+        );
+
+        return client.db();
+    } catch (error) {
+        Logging.error(String(error), "MONGODB");
+
+        await client.close();
+    } finally {
+        await client.close();
+    }
+};

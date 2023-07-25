@@ -1,34 +1,38 @@
-import { Response, Request, NextFunction } from "express";
-import mongoose from "mongoose";
+/*
+ * Factory controller for all models. Provides reusable functions.
+ *
+ * Do not use these methods for production routes
+ * since they do not provide any validation or sanitization.
+ */
 
+import { Response, Request, NextFunction } from "express";
+import { ObjectId } from "mongodb";
+
+import db from "../database/mongodb";
 import asyncWrapper from "../utils/asyncWrapper";
 import { APIError } from "../utils/APIError";
 import { createResponse } from "../utils/createResponse";
 import { HttpCode } from "../library/httpStatusCodes";
 
-/*
-Factory controller for all models. Provides reusable functions.
-
-Do not use these methods for production routes
-
-Hiding __v is going to prevent Mongoose from being able to find the model instance
-(and update its __v) on a save unless you explicitly include those fields in the find method
-*/
-
-export const getAll = (Model: typeof mongoose.Model) =>
+export const getAll = (model: string) =>
     asyncWrapper(async (_req: Response, res: Response, _next: NextFunction) => {
-        const documents = await Model.find();
+        const documents = await (await db())
+            .collection(model)
+            .find({})
+            .toArray();
 
         res.status(HttpCode.OK).json(
             createResponse(true, documents, documents.length)
         );
     });
 
-export const getOne = (Model: typeof mongoose.Model) =>
+export const getOne = (model: string) =>
     asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
 
-        const document = await Model.findById(id);
+        const document = await (await db()).collection(model).findOne({
+            _id: new ObjectId(id),
+        });
 
         if (!document)
             return next(
@@ -41,19 +45,18 @@ export const getOne = (Model: typeof mongoose.Model) =>
         res.status(HttpCode.OK).json(createResponse(true, document, 1));
     });
 
-export const updateOne = (Model: typeof mongoose.Model) =>
+export const updateOne = (model: string) =>
     asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
 
-        const document = await Model.findByIdAndUpdate(
-            new mongoose.Types.ObjectId(id),
+        const document = await (
+            await db()
+        )
+            .collection(model)
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            req.body,
-            {
-                new: true,
-                runValidators: true,
-            }
-        );
+            .findOneAndUpdate({ _id: new ObjectId(id) }, req.body, {
+                maxTimeMS: 1000,
+            });
 
         if (!document)
             return next(
@@ -66,12 +69,12 @@ export const updateOne = (Model: typeof mongoose.Model) =>
         res.status(HttpCode.OK).json(createResponse(true, document, 1));
     });
 
-export const deleteOne = (Model: typeof mongoose.Model) =>
+export const deleteOne = (model: string) =>
     asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
 
-        const document = await Model.findById({
-            _id: new mongoose.Types.ObjectId(id),
+        const document = await (await db()).collection(model).findOneAndDelete({
+            _id: new ObjectId(id),
         });
 
         if (!document)
@@ -81,8 +84,6 @@ export const deleteOne = (Model: typeof mongoose.Model) =>
                     description: `Document with id: ${id} not found`,
                 })
             );
-
-        document.delete();
 
         res.status(HttpCode.NO_CONTENT).json(createResponse(true));
     });

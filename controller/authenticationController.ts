@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
+import { ObjectId } from "mongodb";
 import * as jose from "jose";
 
-import { User } from "../model/user/User";
+import db from "../database/mongodb";
 import asyncWrapper from "../utils/asyncWrapper";
 import { APIError } from "../utils/APIError";
 import { createResponse } from "../utils/createResponse";
@@ -44,7 +45,7 @@ export const login = asyncWrapper(
         // find each document with the provided email address
         // the email is a unique parameter in the User model
         // include the password to verify the user input
-        const user = await User.findOne({ email }).select("+password").exec();
+        const user = await (await db()).collection("users").findOne({ email });
 
         if (user === null)
             return next(
@@ -54,7 +55,8 @@ export const login = asyncWrapper(
                 })
             );
 
-        const passwordEquals = await bcrypt.compare(password, user.password);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const passwordEquals = await bcrypt.compare(password, user.password); // update this as soon as implement the user model
 
         if (!passwordEquals)
             return next(
@@ -87,9 +89,10 @@ export const login = asyncWrapper(
 
 export const register = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-        const user = await User.create(req.body);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const user = await (await db()).collection("user").insertOne(req.body);
 
-        const token = await generateToken(String(user._id));
+        const token = await generateToken(String(user.insertedId));
 
         if (!token)
             return next(
@@ -100,13 +103,15 @@ export const register = asyncWrapper(
             );
 
         // Prevent the passwordConfirm field from being saved since we do not need it anymore
-        await user.updateOne({ $unset: { passwordConfirm: "" } }).exec();
+        await (await db())
+            .collection("users")
+            .updateOne(user, { $unset: { passwordConfirm: "" } });
 
         // Hide password field from the output
         // undefined would hide the fields but typescript will complain
         // about the type inconsistency
-        user.password = "";
-        user.passwordConfirm = "";
+        //user.password = "";
+        //user.passwordConfirm = "";
 
         res.status(HttpCode.CREATED).json(
             createResponse(
@@ -144,7 +149,9 @@ export const protect = asyncWrapper(
 
         const jwt = await jose.jwtVerify(token, secret);
 
-        const user = await User.findById(String(jwt.payload.jti));
+        const user = await (await db()).collection("users").findOne({
+            _id: new ObjectId(jwt.payload.jti),
+        });
 
         if (!user)
             return next(

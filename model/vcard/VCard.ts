@@ -1,72 +1,159 @@
-/*
- * ############### WARNING #################
+/**
+ * VCard
+ * @export VCard
+ * @class VCard
+ * @implements {IVCard}
+ * @implements {Document}
+ * @property {string} name - The name of the VCard
+ * @property {string} email - The email of the VCard
+ * @property {string} phone - The phone of the VCard
+ * @property {string} address - The address of the VCard
+ * @property {string} company - The company of the VCard
+ * @property {string} title - The title of the VCard
+ * @property {string} website - The website of the VCard
+ * @property {string} twitter - The twitter of the VCard
+ * @property {string} github - The github of the VCard
+ * @property {string} linkedin - The linkedin of the VCard
  *
- * Mongoose is a ODM (Object Data Modelling) tool and runs on top of the
- * native mongo-db driver, adding an additional abstraction layer.
+ * 0.0.1 - initial version
+ * @version 0.0.1
  *
- * If you make any changes on the Mongoose schemas keep in mind
- * to change the respective existing entries in the MongoDB Collection!!
- *
- * Since Mongoose creates its own data models, MongoDB doesn't know about
- * our database schema and will not type check, validate and recursively change data types.
- *
- * I will most likely replace Mongoose with the native MongoDB driver in a production
- * environment to reduce abstraction and a potential source of errors.
  */
 
-import { Schema, InferSchemaType, Model, model } from "mongoose";
-import validator from "validator";
+class VCard {
+    public name: string;
+    public email: string;
+    public phone: string;
+    public address: string;
+    public company: string;
+    public title: string;
+    public website: string;
+    public twitter: string;
+    public github: string;
+    public linkedin: string;
 
-// MongoDB user schema
-// Define all user properties
+    constructor(
+        name: string,
+        email: string,
+        phone: string,
+        address: string,
+        company: string,
+        title: string,
+        website: string,
+        twitter: string,
+        github: string,
+        linkedin: string
+    ) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.company = company;
+        this.title = title;
+        this.website = website;
+        this.twitter = twitter;
+        this.github = github;
+        this.linkedin = linkedin;
+    }
 
-const vcardSchema = new Schema({
-    firstName: {
-        type: String,
-        required: [true, "Please provide your first name"],
-    },
+    public getName(): string {
+        return this.name;
+    }
 
-    lastName: {
-        type: String,
-        required: [true, "Please provide your last name"],
-    },
+    public getEmail(): string {
+        return this.email;
+    }
 
-    email: {
-        type: String,
-        required: [true, "Please provide your business email"],
-        validator: {
-            validate: function (value: string) {
-                return validator.isEmail(value);
-            },
-            message: "This email address is invalid",
-        },
-    },
+    public getPhone(): string {
+        return this.phone;
+    }
 
-    telephone: Number,
+    public getAddress(): string {
+        return this.address;
+    }
 
-    mobile: Number,
+    public getCompany(): string {
+        return this.company;
+    }
 
-    picture: {
-        type: Buffer,
-        required: [true, "Please upload a picture of yourself"],
-    },
+    public getTitle(): string {
+        return this.title;
+    }
 
-    department: String,
-});
+    public getWebsite(): string {
+        return this.website;
+    }
 
-// Validation methods
+    public getTwitter(): string {
+        return this.twitter;
+    }
 
-// Middleware functions
+    public getGithub(): string {
+        return this.github;
+    }
 
-// Instance methods which will run on the instance of a model
+    public getLinkedin(): string {
+        return this.linkedin;
+    }
 
-// Static MongoDB methods which are called on the respective model
+    public setName(name: string): void {
+        this.name = name;
+    }
 
-// Infer data types of the MongoDB schema
-export type IVCard = InferSchemaType<typeof vcardSchema>;
+    public setEmail(email: string): void {
+        this.email = email;
+    }
 
-export type IVCardDocument = Model<IVCard>;
+    public setPhone(phone: string): void {
+        this.phone = phone;
+    }
 
-// Put everything together in a MongoDB model
+    public setAddress(address: string): void {
+        this.address = address;
+    }
 
-export const VCard = model<IVCard>("VCard", vcardSchema);
+    public setCompany(company: string): void {
+        this.company = company;
+    }
+
+    public setTitle(title: string): void {
+        this.title = title;
+    }
+
+    public setWebsite(website: string): void {
+        this.website = website;
+    }
+
+    public setTwitter(twitter: string): void {
+        this.twitter = twitter;
+    }
+
+    public setGithub(github: string): void {
+        this.github = github;
+    }
+
+    public setLinkedin(linkedin: string): void {
+        this.linkedin = linkedin;
+    }
+
+    public toString(): string {
+        return `VCard: ${this.name} ${this.email} ${this.phone} ${this.address} ${this.company} ${this.title} ${this.website} ${this.twitter} ${this.github} ${this.linkedin}`;
+    }
+
+    public toJSON(): object {
+        return {
+            name: this.name,
+            email: this.email,
+            phone: this.phone,
+            address: this.address,
+            company: this.company,
+            title: this.title,
+            website: this.website,
+            twitter: this.twitter,
+            github: this.github,
+            linkedin: this.linkedin,
+        };
+    }
+}
+
+export default VCard;

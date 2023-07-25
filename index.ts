@@ -16,7 +16,7 @@ import { HttpCode } from "./library/httpStatusCodes";
 
 const app = express();
 
-// MIDDLEWARE
+// 1) MIDDLEWARE
 app.use(express.json());
 
 // logging
@@ -84,18 +84,21 @@ app.use(session);
 // set secure HTTP headers
 app.use(helmet());
 
-// REDUCE SERVER FINGERPRINT
+// 2) REDUCE SERVER FINGERPRINT
 // only prevents casual exploits
 app.disable("x-powered-by");
 
-// ROUTERS
+// 3) CSRF PROTECTION
+
+// 4) ROUTERS
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/cards", vcardRouter);
 
-// Serving static files
+// 5) STATIC FILES
+// might be unnecessary if I use a frontend framework
 app.use(express.static(path.join(__dirname, "/view")));
 
-// UNHANDLED ROUTES
+// 6) UNHANDLED ROUTES
 app.all("*", (req: Request, _res: Response, next: NextFunction) => {
     next(
         new APIError({
@@ -105,7 +108,7 @@ app.all("*", (req: Request, _res: Response, next: NextFunction) => {
     );
 });
 
-// ERROR HANDLING
+// 7) ERROR HANDLING
 app.use(error);
 
 export default app;

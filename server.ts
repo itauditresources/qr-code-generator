@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import app from "./index";
-import mongodb from "./database/mongodb";
+import db from "./database/mongodb";
 import { port } from "./config/config";
 import { Logging } from "./utils/Logging";
 
@@ -22,8 +22,9 @@ declare global {
     }
 }
 
+// IIFE to connect to the database
 void (async () => {
-    await mongodb;
+    await db();
 })();
 
 const server = app.listen(port, () => {
