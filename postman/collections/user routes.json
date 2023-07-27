@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "5631e2c7-e141-4b76-8be8-41b424f18c31",
+		"name": "user routes",
+		"description": "Develop and test all CRUD operations of the user model",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "13559825-5631e2c7-e141-4b76-8be8-41b424f18c31"
+	},
+	"item": [
+		{
+			"name": "get all users",
+			"id": "3fd5153b-faea-4b67-9f74-179174361d8b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port}}/{{api_version}}/{{route_users}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{api_version}}",
+						"{{route_users}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0e99235c-b0f8-42a3-b5e4-36bea46c9ea1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a4c33fb5-6447-4ac3-9a2e-642fa54b795d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "6986a1ac-8382-4b3f-9914-ae778c66cb78",
+			"key": "route_users",
+			"value": "users",
+			"type": "string"
+		}
+	]
+}
