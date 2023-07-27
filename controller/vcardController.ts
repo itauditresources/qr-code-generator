@@ -10,10 +10,19 @@ import { createResponse } from "../utils/createResponse";
 // Factory routes for users
 export const createCard = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-        const vcard = await (
-            await db()
-        )
-            .collection("vcard")
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
+
+        const vcard = await database
+            .collection("vcards")
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             .insertOne(req.body);
 
@@ -21,7 +30,7 @@ export const createCard = asyncWrapper(
             return next(
                 new APIError({
                     httpCode: HttpCode.CONFLICT,
-                    description: "Could not create new business card",
+                    description: "Could not create the business card",
                 })
             );
 
@@ -33,7 +42,17 @@ export const createCard = asyncWrapper(
 
 export const getMyCard = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-        const vcard = await (await db()).collection("vcard").findOne({
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
+        const vcard = await database.collection("vcards").findOne({
             _id: new ObjectId(req.session.id),
         });
 
@@ -53,7 +72,17 @@ export const getMyCard = asyncWrapper(
 
 export const deleteMyCard = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-        const vcard = await (await db()).collection("vcard").findOneAndDelete({
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
+        const vcard = await database.collection("vcards").findOneAndDelete({
             _id: new ObjectId(req.session.id),
         });
 
@@ -73,7 +102,17 @@ export const deleteMyCard = asyncWrapper(
 
 export const updateMyCard = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
-        const vcard = await (await db()).collection("vcard").findOneAndUpdate(
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
+        const vcard = await database.collection("vcards").findOneAndUpdate(
             {
                 _id: new ObjectId(req.session.id),
             },

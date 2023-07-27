@@ -72,6 +72,7 @@ export const mongodbConfig = {
         )
             .replace("<password>", sanitizedConfig.MONGODB_PASSWORD)
             .replace("<database>", sanitizedConfig.MONGODB_DB_NAME),
+        db_name: sanitizedConfig.MONGODB_DB_NAME,
         // declare options for the mongodb client.
         // Use the current version of the driver
         // See https://mongodb.github.io/node-mongodb-native/5.2/interfaces/MongoClientOptions.html

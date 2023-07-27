@@ -15,11 +15,18 @@ import { createResponse } from "../utils/createResponse";
 import { HttpCode } from "../library/httpStatusCodes";
 
 export const getAll = (model: string) =>
-    asyncWrapper(async (_req: Response, res: Response, _next: NextFunction) => {
-        const documents = await (await db())
-            .collection(model)
-            .find({})
-            .toArray();
+    asyncWrapper(async (_req: Response, res: Response, next: NextFunction) => {
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
+        const documents = await database.collection(model).find({}).toArray();
 
         res.status(HttpCode.OK).json(
             createResponse(true, documents, documents.length)
@@ -28,9 +35,19 @@ export const getAll = (model: string) =>
 
 export const getOne = (model: string) =>
     asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
         const { id } = req.params;
 
-        const document = await (await db()).collection(model).findOne({
+        const document = await database.collection(model).findOne({
             _id: new ObjectId(id),
         });
 
@@ -47,11 +64,19 @@ export const getOne = (model: string) =>
 
 export const updateOne = (model: string) =>
     asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
         const { id } = req.params;
 
-        const document = await (
-            await db()
-        )
+        const document = await database
             .collection(model)
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             .findOneAndUpdate({ _id: new ObjectId(id) }, req.body, {
@@ -71,9 +96,19 @@ export const updateOne = (model: string) =>
 
 export const deleteOne = (model: string) =>
     asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
         const { id } = req.params;
 
-        const document = await (await db()).collection(model).findOneAndDelete({
+        const document = await database.collection(model).findOneAndDelete({
             _id: new ObjectId(id),
         });
 

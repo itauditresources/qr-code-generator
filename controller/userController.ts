@@ -30,6 +30,16 @@ export const updateMe = asyncWrapper(
         res: Response,
         next: NextFunction
     ) => {
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
         const { password, passwordConfirm } = req.body;
         // 1) Create error if user POSTs password data
         if (password || passwordConfirm) {
@@ -46,8 +56,8 @@ export const updateMe = asyncWrapper(
         const filteredBody = filterObj(req.body, ["name", "email"]);
 
         // 3) Update user document
-        const updatedUser = await (await db())
-            .collection("user")
+        const updatedUser = await database
+            .collection("users")
             .findOneAndUpdate({ _id: new ObjectId(req.id) }, filteredBody, {
                 maxTimeMS: 1000,
             });
@@ -57,8 +67,18 @@ export const updateMe = asyncWrapper(
 );
 
 export const deleteMe = asyncWrapper(
-    async (req: Request, res: Response, _next: NextFunction) => {
-        await (await db()).collection("user").findOneAndDelete({
+    async (req: Request, res: Response, next: NextFunction) => {
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
+        await database.collection("users").findOneAndDelete({
             _id: new ObjectId(req.id),
         });
 

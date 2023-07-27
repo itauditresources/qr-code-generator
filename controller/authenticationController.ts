@@ -39,13 +39,23 @@ export const login = asyncWrapper(
         res: Response,
         next: NextFunction
     ) => {
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
         const { email, password }: { email: string; password: string } =
             req.body;
 
         // find each document with the provided email address
         // the email is a unique parameter in the User model
         // include the password to verify the user input
-        const user = await (await db()).collection("users").findOne({ email });
+        const user = await database.collection("users").findOne({ email });
 
         if (user === null)
             return next(
@@ -89,8 +99,19 @@ export const login = asyncWrapper(
 
 export const register = asyncWrapper(
     async (req: Request, res: Response, next: NextFunction) => {
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
+        console.log(await database.collections());
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        const user = await (await db()).collection("user").insertOne(req.body);
+        const user = await database.collection("users").insertOne(req.body);
 
         const token = await generateToken(String(user.insertedId));
 
@@ -103,7 +124,7 @@ export const register = asyncWrapper(
             );
 
         // Prevent the passwordConfirm field from being saved since we do not need it anymore
-        await (await db())
+        await database
             .collection("users")
             .updateOne(user, { $unset: { passwordConfirm: "" } });
 
@@ -126,6 +147,16 @@ export const register = asyncWrapper(
 
 export const protect = asyncWrapper(
     async (req: Request, _res: Response, next: NextFunction) => {
+        const database = await db();
+
+        if (database === undefined) {
+            return next(
+                new APIError({
+                    httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+                    description: "Could not connect to database",
+                })
+            );
+        }
         let token: string | undefined;
         if (
             req.headers.authorization &&
@@ -149,7 +180,7 @@ export const protect = asyncWrapper(
 
         const jwt = await jose.jwtVerify(token, secret);
 
-        const user = await (await db()).collection("users").findOne({
+        const user = await database.collection("users").findOne({
             _id: new ObjectId(jwt.payload.jti),
         });
 

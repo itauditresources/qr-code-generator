@@ -12,19 +12,19 @@ export default async () => {
     try {
         await client.connect();
 
-        await client.db().command({ ping: 1 });
+        await client.db(mongodbConfig.mongo.db_name).command({ ping: 1 });
 
         Logging.info(
-            `Connected to database: ${String(client.db().databaseName)}`,
+            `Connected to database: ${String(
+                client.db(mongodbConfig.mongo.db_name).databaseName
+            )}`,
             "MONGODB"
         );
 
-        return client.db();
+        return client.db(mongodbConfig.mongo.db_name);
     } catch (error) {
         Logging.error(String(error), "MONGODB");
 
-        await client.close();
-    } finally {
         await client.close();
     }
 };

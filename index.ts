@@ -92,7 +92,7 @@ app.disable("x-powered-by");
 
 // 4) ROUTERS
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/cards", vcardRouter);
+app.use("/api/v1/vcards", vcardRouter);
 
 // 5) STATIC FILES
 // might be unnecessary if I use a frontend framework
