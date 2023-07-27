@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "b424a043-5b74-4fee-9aa8-5c9e75fedda1",
+		"name": "authentication routes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "13559825-b424a043-5b74-4fee-9aa8-5c9e75fedda1"
+	},
+	"item": [
+		{
+			"name": "login",
+			"id": "a4776a6b-ccf2-481b-a935-b1ce86d40a14",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}:{{port}}/{{api_version}}/{{route_users}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{api_version}}",
+						"{{route_users}}",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"id": "f850278c-18b2-4e7f-b250-166fb356f71b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}:{{port}}/{{api_version}}/{{route_users}}/register",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{api_version}}",
+						"{{route_users}}",
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9b1c0552-918a-43f5-b448-0922fe2cf34c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "83185130-6a86-47d0-85fb-4b04a4ae835d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d15ef105-6c0a-4b1c-9d03-b4a0e797deb3",
+			"key": "route_users",
+			"value": "users",
+			"type": "string"
+		}
+	]
+}

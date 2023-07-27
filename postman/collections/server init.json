@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "ea0248b1-4e52-456d-a5c0-158122d87866",
+		"name": "server init",
+		"description": "Quick tests to ensure that the server is up and running and all routes can be reached and are secured",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "13559825-ea0248b1-4e52-456d-a5c0-158122d87866"
+	},
+	"item": [
+		{
+			"name": "ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a63bfc93-e062-4d58-b5f9-d70680f4933e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "c52b175c-5f19-4c40-b368-55e90c640d3e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port}}/{{api_version}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{api_version}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ping route users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "88496b63-a584-4e1e-ba5d-0e7c577db154",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"No session found\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"No session found - Please log in\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "0d17990a-4240-4fdd-b82f-5fcddedd14e3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port}}/{{api_version}}/{{route_users}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{api_version}}",
+						"{{route_users}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ping route vcards",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ae980eea-ddc4-4168-bc06-cefad131db8c",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"No session found\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"No session found - Please log in\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "d1f9e5a0-00c3-4068-ab7d-b1b3302df936",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port}}/{{api_version}}/{{route_vcards}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{api_version}}",
+						"{{route_vcards}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "12d3bade-2046-4e49-96e1-8b002ed66450",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "bbdacc4e-6848-47a4-8287-e6aaf048c388",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d0fc2ab8-bcb1-40ec-a95f-0dbc0c4bc45d",
+			"key": "route_vcards",
+			"value": "vcards",
+			"type": "string"
+		},
+		{
+			"id": "89701293-21a0-46ab-9ec2-c469bea5215a",
+			"key": "route_users",
+			"value": "users",
+			"type": "string"
+		}
+	]
+}
