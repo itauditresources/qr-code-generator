@@ -1,11 +1,8 @@
+import RedisStore from "connect-redis";
 import session from "express-session";
-import connectRedis from "connect-redis";
 
 import redisClient from "../database/redis";
 import { cookieOptions, sanitizedConfig } from "../config/config";
-
-// create an instance of the redis store
-const RedisStore = connectRedis(session);
 
 /*
  * session initialization with redis as storage for session data

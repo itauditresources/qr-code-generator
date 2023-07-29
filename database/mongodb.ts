@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 import { Logging } from "../utils/Logging";
 import { mongodbConfig } from "../config/config";
 
-const client = new MongoClient(
+export const client = new MongoClient(
     mongodbConfig.mongo.uri,
     mongodbConfig.mongo.options
 );
@@ -12,7 +12,7 @@ export default async () => {
     try {
         await client.connect();
 
-        await client.db(mongodbConfig.mongo.db_name).command({ ping: 1 });
+        // Check if the client is connected
 
         Logging.info(
             `Connected to database: ${String(
@@ -21,6 +21,8 @@ export default async () => {
             "MONGODB"
         );
 
+        // export the database instance sharing the current socket connections
+        // refer to https://mongodb.github.io/node-mongodb-native/5.7/classes/MongoClient.html#db
         return client.db(mongodbConfig.mongo.db_name);
     } catch (error) {
         Logging.error(String(error), "MONGODB");

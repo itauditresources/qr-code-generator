@@ -1,18 +1,98 @@
-/*
- * ############### WARNING #################
- *
- * Mongoose is a ODM (Object Data Modelling) tool and runs on top of the
- * native mongo-db driver, adding an additional abstraction layer.
- *
- * If you make any changes on the Mongoose schemas keep in mind
- * to change the respective existing entries in the MongoDB Collection!!
- *
- * Since Mongoose creates its own data models, MongoDB doesn't know about
- * our database schema and will not type check, validate and recursively change data types.
- *
- * I will most likely replace Mongoose with the native MongoDB driver in a production
- * environment to reduce abstraction and a potential source of errors.
+/**
+ * Create a user collection with schema validation
+ * @file User.ts
+ * @exports User
+ * @description User collection
+ * @version 1.0.0
+ * @requires mongodb
+ * @requires Logging
  */
 
-import validator from "validator";
-import bcrypt from "bcrypt";
+import db from "../../database/mongodb";
+import { Logging } from "../../utils/Logging";
+
+export default db()
+    .then(async (connection) => {
+        if (connection !== undefined) {
+            // Check if the collection already exists
+            const collections = await connection.listCollections().toArray();
+            const collectionNames = collections.map(
+                (collection) => collection.name
+            );
+            if (
+                ["users", "contacts", "groups"].some((name) =>
+                    collectionNames.includes(name)
+                )
+            ) {
+                return;
+            }
+
+            // Create the user collection including schema validation
+            await connection.createCollection("users", {
+                validator: {
+                    $jsonSchema: {
+                        bsonType: "object",
+                        required: ["email", "password"],
+                        properties: {
+                            email: {
+                                bsonType: "string",
+                                description: "must be a string and is required",
+                            },
+                            password: {
+                                bsonType: "string",
+                                description: "must be a string and is required",
+                            },
+                        },
+                    },
+                },
+            });
+
+            await connection.createCollection("contacts", {
+                validator: {
+                    $jsonSchema: {
+                        bsonType: "object",
+                        required: ["name", "email", "phone", "address"],
+                        properties: {
+                            name: {
+                                bsonType: "string",
+                                description: "must be a string and is required",
+                            },
+                            email: {
+                                bsonType: "string",
+                                description: "must be a string and is required",
+                            },
+                            phone: {
+                                bsonType: "string",
+                                description: "must be a string and is required",
+                            },
+                            address: {
+                                bsonType: "string",
+                                description: "must be a string and is required",
+                            },
+                        },
+                    },
+                },
+            });
+
+            await connection.createCollection("groups", {
+                validator: {
+                    $jsonSchema: {
+                        bsonType: "object",
+                        required: ["name"],
+                        properties: {
+                            name: {
+                                bsonType: "string",
+                                description: "must be a string and is required",
+                            },
+                        },
+                    },
+                },
+            });
+        }
+    })
+    .catch((err) => {
+        Logging.error(
+            `Could not create collections: ${String(err)}`,
+            "MONGODB"
+        );
+    });

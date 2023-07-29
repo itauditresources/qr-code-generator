@@ -109,7 +109,6 @@ export const register = asyncWrapper(
                 })
             );
         }
-        console.log(await database.collections());
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const user = await database.collection("users").insertOne(req.body);
 

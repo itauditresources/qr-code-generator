@@ -2,8 +2,8 @@
 
 [![Dependency Review](https://github.com/itauditresources/vcard-generator-backend/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/itauditresources/vcard-generator-backend/actions/workflows/dependency-review.yml)
 [![CodeQL](https://github.com/itauditresources/vcard-generator-backend/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/itauditresources/vcard-generator-backend/actions/workflows/github-code-scanning/codeql)
-![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/itauditresources/vcard-generator-backend)
-![Lines of code](https://img.shields.io/tokei/lines/github/itauditresources/vcard-generator)
+![GitHub top language](https://img.shields.io/github/languages/top/tlex-web/vcard-generator-backend)
+![Lines of code](https://img.shields.io/tokei/lines/github/itauditresources/vcard-generator-backend)
 
 This backend repository is build using NodeJS version 18.12 and yarn version 3.3.1
 
@@ -22,7 +22,7 @@ To initialize the yarn SDK for VS Code run: `yarn dlx @yarnpkg/sdks vscode`
 3. [dotenv](https://www.nmpjs.com/package/dotenv)
 4. [bcrypt](https://www.nmpjs.com/package/bcrypt)
 5. [jose](https://www.nmpjs.com/package/jose) Since _jsonwebtoken_ doesn't offer native typescript support
-6. [mongoose](https://www.nmpjs.com/package/mongoose) Might be replaced by the native mongodb driver in production
+6. [mongodb](https://www.nmpjs.com/package/mongodb)
 7. [rate-limiter-flexible](https://www.nmpjs.com/package/rate-limiter-flexible)
 8. [redis](https://www.nmpjs.com/package/redis)
 9. [connect-redis](https://www.nmpjs.com/package/connect-redis)

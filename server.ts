@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import app from "./index";
-import db from "./database/mongodb";
+import User from "./model/user/User";
+import VCard from "./model/vcard/VCard";
 import { port } from "./config/config";
 import { Logging } from "./utils/Logging";
 
@@ -22,10 +23,13 @@ declare global {
     }
 }
 
-// IIFE to connect to the database
-void (async () => {
-    await db();
-})();
+// IIFE
+// Connect to the database and create the collections
+// only run this function once to prevent unnecessary network traffic
+// void (async () => {
+//     await User;
+//     await VCard;
+// })();
 
 const server = app.listen(port, () => {
     Logging.info(

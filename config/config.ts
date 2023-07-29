@@ -92,8 +92,6 @@ export const redisConfig: RedisClientOptions = {
         host: sanitizedConfig.REDIS_HOST,
         port: sanitizedConfig.REDIS_PORT,
     },
-    // necessary since v.4
-    legacyMode: true,
 };
 
 // RATE_LIMITER settings
