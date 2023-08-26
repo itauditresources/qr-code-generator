@@ -40,6 +40,6 @@
         "mongodb": "^5.7.0",
         "rate-limiter-flexible": "^2.4.2",
         "redis": "^4.6.7",
-        "validator": "^13.7.0"
+        "validator": "^13.11.0"
     }
 }
