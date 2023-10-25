@@ -3,7 +3,6 @@ import { ObjectId } from "mongodb";
 
 import { HttpCode } from "../library/httpStatusCodes";
 import db from "../database/mongodb";
-import User from "../model/user/User";
 import { APIError } from "../utils/APIError";
 import asyncWrapper from "../utils/asyncWrapper";
 import { createResponse } from "../utils/createResponse";

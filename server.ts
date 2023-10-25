@@ -26,10 +26,10 @@ declare global {
 // IIFE
 // Connect to the database and create the collections
 // only run this function once to prevent unnecessary network traffic
-// void (async () => {
-//     await User;
-//     await VCard;
-// })();
+void (async () => {
+    await User;
+    await VCard;
+})();
 
 const server = app.listen(port, () => {
     Logging.info(

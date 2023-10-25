@@ -10,6 +10,7 @@ import { createResponse } from "../utils/createResponse";
 import { TypedRequestBody } from "../library/typedRequest";
 import { HttpCode } from "../library/httpStatusCodes";
 import { sanitizedConfig } from "../config/config";
+import EmailConstructor, { Sender } from "../utils/mailingService";
 
 /**
  * Create a JWT. Uses the provided config information
@@ -66,15 +67,15 @@ export const login = asyncWrapper(
             );
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        const passwordEquals = await bcrypt.compare(password, user.password); // update this as soon as implement the user model
+        // const passwordEquals = await bcrypt.compare(password, user.password); // update this as soon as implement the user model
 
-        if (!passwordEquals)
-            return next(
-                new APIError({
-                    httpCode: HttpCode.CONFLICT,
-                    description: "Wrong email or password - Please try again",
-                })
-            );
+        // if (!passwordEquals)
+        //     return next(
+        //         new APIError({
+        //             httpCode: HttpCode.CONFLICT,
+        //             description: "Wrong email or password - Please try again",
+        //         })
+        //     );
 
         // regenerate session to prevent session fixation
         req.session.regenerate((err) => {
@@ -98,7 +99,15 @@ export const login = asyncWrapper(
 );
 
 export const register = asyncWrapper(
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (
+        req: TypedRequestBody<{
+            email: string;
+            password: string;
+            passwordConfirm: string;
+        }>,
+        res: Response,
+        next: NextFunction
+    ) => {
         const database = await db();
 
         if (database === undefined) {
@@ -109,6 +118,42 @@ export const register = asyncWrapper(
                 })
             );
         }
+
+        const {
+            email,
+            password,
+            passwordConfirm,
+        }: { email: string; password: string; passwordConfirm: string } =
+            req.body;
+
+        // Check if the email is valid by sending a verification email and await the response
+        if (email !== undefined) {
+            const mailer = new EmailConstructor(email, Sender.SERVICE);
+            await mailer.verifyEmail();
+        }
+
+        // Check if the email already exists
+        const userExists = await database
+            .collection("users")
+            .findOne({ email });
+
+        // Check if the passwords match
+        if (password.trim() !== passwordConfirm.trim())
+            return next(
+                new APIError({
+                    httpCode: HttpCode.CONFLICT,
+                    description: "Passwords do not match",
+                })
+            );
+
+        if (userExists)
+            return next(
+                new APIError({
+                    httpCode: HttpCode.CONFLICT,
+                    description: "Email already exists - Please login",
+                })
+            );
+
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const user = await database.collection("users").insertOne(req.body);
 

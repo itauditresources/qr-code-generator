@@ -19,11 +19,7 @@ export default db()
             const collectionNames = collections.map(
                 (collection) => collection.name
             );
-            if (
-                ["users", "contacts", "groups"].some((name) =>
-                    collectionNames.includes(name)
-                )
-            ) {
+            if (["users"].some((name) => collectionNames.includes(name))) {
                 return;
             }
 
@@ -37,52 +33,18 @@ export default db()
                             email: {
                                 bsonType: "string",
                                 description: "must be a string and is required",
+                                uniqueItems: true,
+                                // Server side validation to check uniqueness of email
                             },
                             password: {
                                 bsonType: "string",
                                 description: "must be a string and is required",
                             },
-                        },
-                    },
-                },
-            });
-
-            await connection.createCollection("contacts", {
-                validator: {
-                    $jsonSchema: {
-                        bsonType: "object",
-                        required: ["name", "email", "phone", "address"],
-                        properties: {
-                            name: {
-                                bsonType: "string",
-                                description: "must be a string and is required",
-                            },
-                            email: {
-                                bsonType: "string",
-                                description: "must be a string and is required",
-                            },
-                            phone: {
-                                bsonType: "string",
-                                description: "must be a string and is required",
-                            },
-                            address: {
-                                bsonType: "string",
-                                description: "must be a string and is required",
-                            },
-                        },
-                    },
-                },
-            });
-
-            await connection.createCollection("groups", {
-                validator: {
-                    $jsonSchema: {
-                        bsonType: "object",
-                        required: ["name"],
-                        properties: {
-                            name: {
-                                bsonType: "string",
-                                description: "must be a string and is required",
+                            role: {
+                                enum: ["user", "admin"],
+                                description:
+                                    "can only be one of the enum values and is required",
+                                // Add user as default role if no role is provided via an aggregation pipeline of MongoDB ATLAS
                             },
                         },
                     },

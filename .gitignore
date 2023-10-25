@@ -22,3 +22,12 @@ node_modules
 # Documentation here: https://yarnpkg.com/features/zero-installs
 !.yarn/cache
 #.pnp.*
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Debug log file
+yarn-debug.log*
+
+# Temporary files
+*.bkp

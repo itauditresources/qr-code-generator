@@ -51,7 +51,7 @@ const handleValidationError = (err: any) => {
 };
 
 const handleTypeError = (err: any) => {
-    console.log(err.constructor);
+    Logging.error(String(err), "ERROR");
     const message = `Invalid input data. ${String(err.message)}`;
     return new APIError({
         name: "Error",
@@ -69,6 +69,18 @@ const handleJWTError = () =>
         isOperational: true,
     });
 
+const handleMongoDBError = (err: any) => {
+    const message = err.content.errInfo.details.schemaRulesNotSatisfied.map(
+        (el: any) => el.missingProperties
+    );
+    new APIError({
+        name: "Error",
+        httpCode: HttpCode.INTERNAL_SERVER_ERROR,
+        description: message,
+        isOperational: true,
+    });
+};
+
 const handleJWTExpiredError = () =>
     new APIError({
         name: "Error",
@@ -82,6 +94,7 @@ const devError = (err: any, res: Response) => {
     res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
         error: err.name,
         message: err.message,
+        content: err,
         stack: err.stack,
     });
 };
@@ -130,6 +143,8 @@ export default (
         if (err.name === "JsonWebTokenError") err = handleJWTError();
         // JWT Expiry Error
         if (err.name === "TokenExpiredError") err = handleJWTExpiredError();
+        // MongoDB Error
+        if (err.name === "MongoServerError") err = handleMongoDBError(err);
         prodError(err, res);
     }
 };

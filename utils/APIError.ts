@@ -4,6 +4,8 @@ interface ErrorArgs {
     name?: string;
     httpCode: HttpCode;
     description: string;
+    title?: string;
+    message?: string;
     isOperational?: boolean;
 }
 

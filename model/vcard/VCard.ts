@@ -20,6 +20,8 @@ export default db()
                 (collection) => collection.name
             );
             if (collectionNames.includes("vcards")) {
+                console.log(`collection 'vcards' already exists`);
+
                 return;
             }
 
@@ -28,9 +30,19 @@ export default db()
                 validator: {
                     $jsonSchema: {
                         bsonType: "object",
-                        required: ["name", "email", "phone", "address"],
+                        required: [
+                            "firstname",
+                            "lastname",
+                            "email",
+                            "phone",
+                            "landline",
+                        ],
                         properties: {
-                            name: {
+                            firstname: {
+                                bsonType: "string",
+                                description: "must be a string and is required",
+                            },
+                            lastname: {
                                 bsonType: "string",
                                 description: "must be a string and is required",
                             },
@@ -39,12 +51,34 @@ export default db()
                                 description: "must be a string and is required",
                             },
                             phone: {
-                                bsonType: "string",
-                                description: "must be a string and is required",
+                                bsonType: "number",
+                                description: "must be a number and is required",
                             },
-                            address: {
-                                bsonType: "string",
-                                description: "must be a string and is required",
+                            landline: {
+                                bsonType: "number",
+                                description: "must be a number and is required",
+                            },
+                            socials: {
+                                bsonType: "object",
+                                description: "must be an object",
+                                properties: {
+                                    facebook: {
+                                        bsonType: "string",
+                                        description: "must be a string",
+                                    },
+                                    twitter: {
+                                        bsonType: "string",
+                                        description: "must be a string",
+                                    },
+                                    webpage: {
+                                        bsonType: "string",
+                                        description: "must be a string",
+                                    },
+                                    github: {
+                                        bsonType: "string",
+                                        description: "must be a string",
+                                    },
+                                },
                             },
                         },
                     },
