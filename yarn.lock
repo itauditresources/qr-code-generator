@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 6
   cacheKey: 10c0
 
 "@aashutoshrathi/word-wrap@npm:^1.2.3":
@@ -257,32 +257,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/client@npm:^7.7.0":
-  version: 7.7.0
-  resolution: "@sendgrid/client@npm:7.7.0"
+"@sendgrid/client@npm:^8.1.3":
+  version: 8.1.3
+  resolution: "@sendgrid/client@npm:8.1.3"
   dependencies:
-    "@sendgrid/helpers": "npm:^7.7.0"
-    axios: "npm:^0.26.0"
-  checksum: acf1db2dcc5181f6f9befba811ba6acb31e50051ab6bded952cb073f117c9237d86013602cdf523b91582c40545e1085a413f1e9e490a46b1d664a5c956c1f3f
+    "@sendgrid/helpers": ^8.0.0
+    axios: ^1.6.8
+  checksum: 8/f4a21c7cf9a263003b0358651358dd5a8df7f1b9a689b0827139f8096f87aabd8886a2aebf157b96617af3a8f1948c30f70350318a29a5cfe1d4ffa7586433ff
   languageName: node
   linkType: hard
 
-"@sendgrid/helpers@npm:^7.7.0":
-  version: 7.7.0
-  resolution: "@sendgrid/helpers@npm:7.7.0"
+"@sendgrid/helpers@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@sendgrid/helpers@npm:8.0.0"
   dependencies:
-    deepmerge: "npm:^4.2.2"
-  checksum: 14dfe9af191dd9ad18f0b2744d6d12dbc80f830507b6112d8c4c1c4741ff282393a06e4b4559c0f404d33971639ecadb1017e0cc3b7187e56ec64ab9ee5ff21c
+    deepmerge: ^4.2.2
+  checksum: 8/758cab1cb67c8d32632c7a599b2840186dcebc7e9fbc382633b5268d08ecf1de80817730ccbb5d0ad61905407070fa0a59c54d523e7b808b35b403ea0d4db22d
   languageName: node
   linkType: hard
 
-"@sendgrid/mail@npm:^7.7.0":
-  version: 7.7.0
-  resolution: "@sendgrid/mail@npm:7.7.0"
+"@sendgrid/mail@npm:^8.1.2":
+  version: 8.1.3
+  resolution: "@sendgrid/mail@npm:8.1.3"
   dependencies:
-    "@sendgrid/client": "npm:^7.7.0"
-    "@sendgrid/helpers": "npm:^7.7.0"
-  checksum: 5a1d617f1e3f8d47d4fe188ff08f18fca63e3006545ad1f954bf30887806c810f6c0dea7d8850c24de03b3aca75f70f4324369ed2497d957870b8a65f1451127
+    "@sendgrid/client": ^8.1.3
+    "@sendgrid/helpers": ^8.0.0
+  checksum: 8/9ff4ad494256929a0852a607068bef498c4b182bed2a59d07b599786cc295ae2e8485d6cd141c275120b9134e6fde192e49335395c963a3237eee0cbaa8b2f7a
   languageName: node
   linkType: hard
 
@@ -824,12 +824,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.26.0":
-  version: 0.26.1
-  resolution: "axios@npm:0.26.1"
+"asynckit@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "asynckit@npm:0.4.0"
+  checksum: 8/7b78c451df768adba04e2d02e63e2d0bf3b07adcd6e42b4cf665cb7ce899bedd344c69a1dcbce355b5f972d597b25aaa1c1742b52cffd9caccb22f348114f6be
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.6.8":
+  version: 1.7.7
+  resolution: "axios@npm:1.7.7"
   dependencies:
-    follow-redirects: "npm:^1.14.8"
-  checksum: 77ad7f1e6ca04fcd3fa8af1795b09d8b7c005b71a31f28d99ba40cda0bdcc12a4627801d7fac5efa62b9f667a8402bd54c669039694373bc8d44f6be611f785c
+    follow-redirects: ^1.15.6
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 8/882d4fe0ec694a07c7f5c1f68205eb6dc5a62aecdb632cc7a4a3d0985188ce3030e0b277e1a8260ac3f194d314ae342117660a151fabffdc5081ca0b5a8b47fe
   languageName: node
   linkType: hard
 
@@ -1062,6 +1071,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"combined-stream@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "combined-stream@npm:1.0.8"
+  dependencies:
+    delayed-stream: ~1.0.0
+  checksum: 8/49fa4aeb4916567e33ea81d088f6584749fc90c7abec76fd516bf1c5aa5c79f3584b5ba3de6b86d26ddd64bae5329c4c7479343250cfe71c75bb366eae53bb7c
+  languageName: node
+  linkType: hard
+
 "concat-map@npm:0.0.1":
   version: 0.0.1
   resolution: "concat-map@npm:0.0.1"
@@ -1188,6 +1206,13 @@ __metadata:
   version: 4.2.2
   resolution: "deepmerge@npm:4.2.2"
   checksum: d6136eee869057fea7a829aa2d10073ed49db5216e42a77cc737dd385334aab9b68dae22020a00c24c073d5f79cbbdd3f11b8d4fc87700d112ddaa0e1f968ef2
+  languageName: node
+  linkType: hard
+
+"delayed-stream@npm:~1.0.0":
+  version: 1.0.0
+  resolution: "delayed-stream@npm:1.0.0"
+  checksum: 8/46fe6e83e2cb1d85ba50bd52803c68be9bd953282fa7096f51fc29edd5d67ff84ff753c51966061e5ba7cb5e47ef6d36a91924eddb7f3f3483b1c560f77a0020
   languageName: node
   linkType: hard
 
@@ -1626,13 +1651,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.8":
-  version: 1.15.2
-  resolution: "follow-redirects@npm:1.15.2"
+"follow-redirects@npm:^1.15.6":
+  version: 1.15.8
+  resolution: "follow-redirects@npm:1.15.8"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: da5932b70e63944d38eecaa16954bac4347036f08303c913d166eda74809d8797d38386e3a0eb1d2fe37d2aaff2764cce8e9dbd99459d860cf2cdfa237923b5f
+  checksum: 8/14ea00a27257609328860f7792f4c2ba54e636cbce28ac4ae1d6b039d1f8285253081e43ffd29f7c2bf8854e95ab8f9d1db4e800c90a09d9ee78f75364a06deb
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "form-data@npm:4.0.0"
+  dependencies:
+    asynckit: ^0.4.0
+    combined-stream: ^1.0.8
+    mime-types: ^2.1.12
+  checksum: 8/01135bf8675f9d5c61ff18e2e2932f719ca4de964e3be90ef4c36aacfc7b9cb2fceb5eca0b7e0190e3383fe51c5b37f4cb80b62ca06a99aaabfcfd6ac7c9328c
   languageName: node
   linkType: hard
 
@@ -1676,9 +1712,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@npm%3A~2.3.2#optional!builtin<compat/fsevents>":
+"fsevents@patch:fsevents@npm%3A~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
   dependencies:
     node-gyp: "npm:latest"
   conditions: os=darwin
@@ -2300,7 +2336,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-types@npm:~2.1.24, mime-types@npm:~2.1.34":
+"mime-types@npm:^2.1.12, mime-types@npm:~2.1.24, mime-types@npm:~2.1.34":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
@@ -2840,6 +2876,13 @@ __metadata:
     forwarded: "npm:0.2.0"
     ipaddr.js: "npm:1.9.1"
   checksum: c3eed999781a35f7fd935f398b6d8920b6fb00bbc14287bc6de78128ccc1a02c89b95b56742bf7cf0362cc333c61d138532049c7dedc7a328ef13343eff81210
+  languageName: node
+  linkType: hard
+
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: 8/ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
   languageName: node
   linkType: hard
 
@@ -3411,13 +3454,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.2.2#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@^5.2.2#~builtin<compat/typescript>":
   version: 5.2.2
-  resolution: "typescript@patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"
+  resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=d73830"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 062c1cee1990e6b9419ce8a55162b8dc917eb87f807e4de0327dbc1c2fa4e5f61bc0dd4e034d38ff541d1ed0479b53bcee8e4de3a4075c51a1724eb6216cb6f5
+  checksum: 8/07106822b4305de3f22835cbba949a2b35451cad50888759b6818421290ff95d522b38ef7919e70fb381c5fe9c1c643d7dea22c8b31652a717ddbd57b7f4d554
   languageName: node
   linkType: hard
 
@@ -3517,31 +3560,31 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vcard-generator-backend@workspace:."
   dependencies:
-    "@sendgrid/mail": "npm:^7.7.0"
-    "@types/bcrypt": "npm:^5.0.1"
-    "@types/express": "npm:^4.17.20"
-    "@types/express-session": "npm:^1.17.5"
-    "@types/mocha": "npm:^10.0.3"
-    "@types/node": "npm:^20.8.9"
-    "@types/validator": "npm:^13.11.5"
-    "@typescript-eslint/eslint-plugin": "npm:^6.9.0"
-    "@typescript-eslint/parser": "npm:^6.9.0"
-    bcrypt: "npm:^5.1.1"
-    connect-redis: "npm:^7.1.0"
-    dotenv: "npm:^16.3.1"
-    eslint: "npm:^8.52.0"
-    express: "npm:^4.18.2"
-    express-session: "npm:^1.17.3"
-    helmet: "npm:^7.0.0"
-    jose: "npm:^5.0.1"
-    mocha: "npm:^10.2.0"
-    mongodb: "npm:^6.2.0"
-    nodemon: "npm:^3.0.1"
-    rate-limiter-flexible: "npm:^3.0.2"
-    redis: "npm:^4.6.10"
-    ts-node: "npm:^10.9.1"
-    typescript: "npm:^5.2.2"
-    validator: "npm:^13.11.0"
+    "@sendgrid/mail": ^8.1.2
+    "@types/bcrypt": ^5.0.1
+    "@types/express": ^4.17.20
+    "@types/express-session": ^1.17.5
+    "@types/mocha": ^10.0.3
+    "@types/node": ^20.8.9
+    "@types/validator": ^13.11.5
+    "@typescript-eslint/eslint-plugin": ^6.9.0
+    "@typescript-eslint/parser": ^6.9.0
+    bcrypt: ^5.1.1
+    connect-redis: ^7.1.0
+    dotenv: ^16.3.1
+    eslint: ^8.52.0
+    express: ^4.18.2
+    express-session: ^1.17.3
+    helmet: ^7.0.0
+    jose: ^5.0.1
+    mocha: ^10.2.0
+    mongodb: ^6.2.0
+    nodemon: ^3.0.1
+    rate-limiter-flexible: ^3.0.2
+    redis: ^4.6.10
+    ts-node: ^10.9.1
+    typescript: ^5.2.2
+    validator: ^13.11.0
   languageName: unknown
   linkType: soft
 
